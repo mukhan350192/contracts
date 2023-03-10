@@ -29,10 +29,25 @@ class UserController extends Controller
     public function addDocs(DocumentRequest $request, PartnerService $service): JsonResponse
     {
         //var_dump(auth()->user());
-        return $service->addDocs($request->documents, auth()->user()->id);
+        return $service->addDocs($request->doc, $request->name, auth()->user()->id);
     }
 
-    public function sign(SignRequest $request,PartnerService $service){
-        return $service->sign($request->phone,$request->password);
+    public function sign(SignRequest $request, PartnerService $service)
+    {
+        return $service->sign($request->phone, $request->password);
+    }
+
+    public function getDocs(PartnerService $service)
+    {
+        return $service->getDocs(auth()->user()->id);
+    }
+
+    public function getActiveDocs(PartnerService $service)
+    {
+        return $service->getActiveDocs(auth()->user()->id);
+    }
+
+    public function payment(Request $request,PartnerService $service){
+        return $service->payment(auth()->user()->id,$request->amount);
     }
 }

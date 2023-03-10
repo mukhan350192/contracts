@@ -5,7 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property $documents array
+ * @property $doc
+ * @property $name string
  */
 class DocumentRequest extends FormRequest
 {
@@ -25,8 +26,8 @@ class DocumentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'documents.*.doc' => 'required|file|mimes:docx,pdf',
-            'documents.*.name' => 'required|string'
+            'doc' => 'required|file|mimes:docx,pdf',
+            'name' => 'required|string'
         ];
     }
 }

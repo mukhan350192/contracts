@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,10 +22,18 @@ Route::get('/register',function (){
    return view('register');
 });
 
-Route::post('partner-page',function (){
+Route::get('partner-page',function (){
    return view('partner-page');
 });
-
 Route::get('login',function (){
     return view('login');
+});
+Route::get('upload',function (){
+    return view('upload');
+});
+Route::get('send',function (){
+    return view('send');
+});
+Route::get('payment',function (){
+    return view('payment');
 });

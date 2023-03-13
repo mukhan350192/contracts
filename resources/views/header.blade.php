@@ -8,8 +8,7 @@
 </head>
 <nav class="navbar navbar-expand-lg navbar-light bg-light m-10">
     <div class="container-fluid m-4 fixed-top">
-        <a class="navbar-brand" id="main_menu" href="#"><span class="fa fa-newspaper-o" style="color:green;"
-                                                              aria-hidden="true"></span>Navbar</a>
+        <a class="navbar-brand" id="main_menu" href="#">Navbar</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -17,13 +16,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" aria-current="page" href="#rates">Тарифы</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
+                    <a class="nav-link" href="#features">Преимущества</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
+                    <a class="nav-link" href="#howItWorks">Как это работает?</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="personal">Личный кабинет</a>
@@ -33,6 +32,8 @@
     </div>
 </nav>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
+
 <script>
     const personal = document.getElementById('personal');
     personal.addEventListener("click",function (event){

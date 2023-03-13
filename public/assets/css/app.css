@@ -534,6 +534,14 @@ a.article:hover {
 .pagination li:last-child a{
     border-radius: 50%;
 }
+.feature-grid-right p{
+    font-size: 12px;
+    font-family: cursive;
+}
+.feature-grid-right h3{
+    font-size: 14px;
+    font-family: "Gill Sans Extrabold", sans-serif;
+}
 @media only screen and (max-width:767px){
     .panel .panel-heading .title{
         text-align: center;

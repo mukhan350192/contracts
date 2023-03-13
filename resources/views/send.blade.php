@@ -18,9 +18,9 @@
                 </div>
                 <div class="form-outline">
                     <label class="title-small">Номер телефона</label>
-                    <input type="text" class="form-control" name="phone">
+                    <input type="text" class="form-control" name="phone" id="phone">
                     <label for="" class="title-small">ИИН клиента</label>
-                    <input type="text" class="form-control" name="iin">
+                    <input type="text" class="form-control" name="iin" id="iin">
                     <div class="d-flex justify-content-center text-center mt-3">
                         <button type="submit" class="btn btn-primary">Отправить смс</button>
                     </div>
@@ -49,13 +49,13 @@
                 let select = $('#select');
                 for (let i = 0; i < response.doc.length; i++) {
                     select.append($('<option>', {
-                        value: response.doc[0].length,
-                        text: response.doc[0].name,
+                        value: response.doc[i].id,
+                        text: response.doc[i].name,
                     }));
                 }
                 document.getElementById('send').style.display = "block";
             } else {
-                document.getElementById('error').innerHTML=response.error;
+                document.getElementById('error').innerHTML = response.error;
             }
         },
         error: function (xhr) {
@@ -66,29 +66,43 @@
         }
     });
 
-
-    document.getElementById('send').addEventListener(function (e){
-       e.preventDefault();
+    document.getElementById('send').addEventListener('submit', function (e) {
+        e.preventDefault();
+        docID = $("#select").val();
+        let number = $("#phone").val();
+        let ii = $("#iin").val();
+        console.log(number)
+        console.log(docID)
+        console.log(ii)
         $.ajax({
             url: "{{ url('api/partner/send') }}",
             type: "POST",
             headers: {
+                'Accept': 'application/json',
                 'Authorization': 'Bearer ' + token,
             },
+            data: {
+                phone: number,
+                iin: ii,
+                document_id: docID,
+            },
             success: function (response) {
-                if (response.success) {
-                   document.getElementById('success').style.display = "block";
-                }else{
-                    document.getElementById('fail').style.display = "none";
-                }
+                console.log(response)
+                /*if (response.success) {
+                  //  document.getElementById('success').style.display = "block";
+                } else {
+                  //  document.getElementById('fail').style.display = "none";
+                }*/
             },
             error: function (xhr) {
-                // handle the error
+                console.log(xhr)
+                console.log(data)
             },
             complete: function () {
 
             }
         });
+        console.log(token)
 
     });
 </script>

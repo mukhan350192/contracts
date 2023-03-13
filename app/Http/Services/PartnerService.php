@@ -15,6 +15,7 @@ class PartnerService
 {
     protected int $merchantID = 538153;
     protected string $url = 'https://api.paybox.money/payment.php';
+    protected string $paymentKey = 'hbmWS9krWO1Sd57Z';
     protected string $result_url = 'https://api.mircreditov.kz/api/paymentResult';
 
     protected string $infobipURL = 'https://xr5ep4.api.infobip.com';
@@ -123,7 +124,7 @@ class PartnerService
         ];
         ksort($data);
         array_unshift($data, 'payment.php');
-        array_push($data, 'vKuygqBoLgE7dxDp');
+        array_push($data, $this->paymentKey);
 
         $data['pg_sig'] = md5(implode(';', $data));
 
@@ -135,15 +136,28 @@ class PartnerService
 
     public function paymentResult(int $extra_user_id, float $pg_amount, string $transaction_id)
     {
-        $payment = Payment::where('transaction_id', $transaction_id)->get();
-        if ($payment) {
+        $payment = Payment::where('transaction_id', $transaction_id)->first();
+
+        if ($payment && $payment->exists) {
             return response()->fail('Оплата уже есть');
         }
         Payment::create([
             'user_id' => $extra_user_id,
-            'pg_amount' => $pg_amount,
+            'amount' => $pg_amount,
             'transaction_id' => $transaction_id,
         ]);
+        $balances = DB::table('balance')->where('user_id',$extra_user_id)->first();
+        if (!$balances){
+            DB::table('balance')->insertGetId([
+               'amount' => $pg_amount,
+                'user_id' => $extra_user_id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+        }else{
+            $balances->increment('amount',$pg_amount);
+        }
+
         $balance = DB::table('balance_history')->where('user_id', $extra_user_id)->orderByDesc('created_at')->first();
         $before = 0;
         if ($balance) {
@@ -155,6 +169,7 @@ class PartnerService
             'amount' => $pg_amount,
             'balance_before' => $before,
             'balance_after' => $before + $pg_amount,
+            'user_id' => $extra_user_id,
             'description' => 'Пополнение',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
@@ -207,6 +222,7 @@ class PartnerService
             'balance_before' => $before-1,
             'balance_after' => $before-1,
             'description' => 'Отправка смс',
+            'user_id' => $userID,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);

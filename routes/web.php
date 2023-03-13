@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ShortURLController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -46,3 +47,4 @@ Route::get('dealHistory',function (){
 Route::get('transactionHistory',function (){
     return view('transaction');
 });
+Route::get('sign/{token}',[ShortURLController::class,'sign']);

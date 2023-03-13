@@ -54,12 +54,17 @@ class UserController extends Controller
         return $service->payment(auth()->user()->id,$request->amount);
     }
 
-    public function paymentResult(PaymentResultRequest $request,PartnerService $service){
+    public function paymentResult(Request $request,PartnerService $service){
+        if (!$request->extra_user_id || !$request->pg_amount || !$request->pg_payment_id){
+            return response()->fail('Попробуйте позже');
+        }
         return $service->paymentResult($request->extra_user_id,$request->pg_amount,$request->pg_payment_id);
     }
 
     public function send(SMSRequest $request,PartnerService $service){
+       // var_dump($request);
         $smsID = Sms::make(auth()->user()->id,$request->phone);
+        //var_dump($smsID);
         return $service->send(auth()->user()->id,$request->phone,$request->iin,$smsID,$request->document_id);
     }
 }

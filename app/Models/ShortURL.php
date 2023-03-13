@@ -15,4 +15,8 @@ class ShortURL extends Model
         'status',
         'user_id',
     ];
+
+    public static function getDocs($token){
+        return self::query()->join('documents','document_id','=','documents.id')->where('token',$token)->where('short_u_r_l_s.status',0)->first();
+    }
 }

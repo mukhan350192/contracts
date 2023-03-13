@@ -28,8 +28,13 @@ class PartnerService
         string|null $company_name,
         string      $company_type,
         string|null $address,
+        int         $code
     )
     {
+        $check = DB::table('sms_confirmation')->where('phone',$phone)->where('code',$code)->first();
+        if (!$check){
+            return response()->fail('Код не совпадает');
+        }
         $user = User::create([
             'name' => $name,
             'phone' => $phone,
@@ -146,16 +151,16 @@ class PartnerService
             'amount' => $pg_amount,
             'transaction_id' => $transaction_id,
         ]);
-        $balances = DB::table('balance')->where('user_id',$extra_user_id)->first();
-        if (!$balances){
+        $balances = DB::table('balance')->where('user_id', $extra_user_id)->first();
+        if (!$balances) {
             DB::table('balance')->insertGetId([
-               'amount' => $pg_amount,
+                'amount' => $pg_amount,
                 'user_id' => $extra_user_id,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
-        }else{
-            $balances->increment('amount',$pg_amount);
+        } else {
+            $balances->increment('amount', $pg_amount);
         }
 
         $balance = DB::table('balance_history')->where('user_id', $extra_user_id)->orderByDesc('created_at')->first();
@@ -177,20 +182,21 @@ class PartnerService
         return response()->success();
     }
 
-    public function send(int $userID,string $phone,string $iin,int $smsID,int $documentID){
+    public function send(int $userID, string $phone, string $iin, int $smsID, int $documentID)
+    {
 
         $token = Str::random(16);
         ShortURL::query()->create([
-           'document_id' => $documentID,
-           'token' => $token,
-           'user_id' => $userID,
+            'document_id' => $documentID,
+            'token' => $token,
+            'user_id' => $userID,
         ]);
-        $link = 'https://api.mircreditov.kz/sign/'.$token;
+        $link = 'https://api.mircreditov.kz/sign/' . $token;
         $messages = [
             [
                 'notifyUrl' => route('infobip'),
                 'from' => 'ICREDITKZ',
-                'text' => 'Для подтверждение договора перейдите по ссылке '.$link,
+                'text' => 'Для подтверждение договора перейдите по ссылке ' . $link,
                 'destinations' => [
                     [
                         'messageId' => $smsID,
@@ -203,24 +209,24 @@ class PartnerService
         $request = Http::withoutVerifying()
             ->baseUrl($this->infobipURL)
             ->withHeaders([
-                'Authorization' => 'App '.$this->key,
+                'Authorization' => 'App ' . $this->key,
             ])->asJson()->post('/sms/2/text/advanced', [
                 'messages' => $messages,
             ]);
 
         $response = $request->json();
 
-        $balance = DB::table('balance_history')->where('user_id',$userID)->orderByDesc('created_at')->first();
+        $balance = DB::table('balance_history')->where('user_id', $userID)->orderByDesc('created_at')->first();
         $before = 0;
-        if ($balance){
+        if ($balance) {
             $before = $balance->balance_before;
         }
-        DB::table('balance')->where('user_id',$userID)->decrement('amount',1);
+        DB::table('balance')->where('user_id', $userID)->decrement('amount', 1);
         DB::table('balance_history')->insertGetId([
-           'status' => 'expenditure',
+            'status' => 'expenditure',
             'amount' => 0,
-            'balance_before' => $before-1,
-            'balance_after' => $before-1,
+            'balance_before' => $before - 1,
+            'balance_after' => $before - 1,
             'description' => 'Отправка смс',
             'user_id' => $userID,
             'created_at' => Carbon::now(),

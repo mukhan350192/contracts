@@ -4,7 +4,7 @@
         <div class="col-lg-3"></div>
         <div class="col-lg-6 mt-4">
 
-            <form action="api/partner/create" class="register" method="post">
+            <form action="api/partner/create" class="register" method="post" id="reg">
                 <h1 class="text-center">Регистрация</h1>
                 @csrf
                 <div class="form-outline mb-4 mt-5 text-center fs-3">
@@ -65,10 +65,18 @@
 
 
                 </div>
-
+                <div class="form-outline mb-4 text-center fs-3" id="code" style="display: none;">
+                    <label for="password"><strong>Код подтверждение</strong></label>
+                    <input type="number" class="form-control">
+                </div>
                 <button type="submit" class="form-control mb-4 text-center fs-3 p-3 register">Регистрация</button>
-                <label for="sign"><h1><a id="login" href="login" class="form-control mb-4 text-center ml-4">Войти</a></h1></label>
+                <label for="sign"><h1><a id="login" href="login" class="form-control mb-4 text-center ml-4">Войти</a>
+                    </h1></label>
+
             </form>
+            <button id="check" type="submit" class="form-control mb-4 text-center fs-3 p-3 register"
+                    style="display: none;">Подтвердить
+            </button>
         </div>
     </div>
 </div>
@@ -85,5 +93,65 @@
         if (select != 1) {
             $("#company").show();
         }
+    });
+    document.getElementById('reg').addEventListener('submit', function (e) {
+        e.preventDefault();
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://api.mircreditov.kz/api/sendSMS');
+        xhr.setRequestHeader('Accept', 'application/json');
+        let number = document.getElementById('phone').value;
+        let data = {
+            phone: number,
+        };
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+                let response = JSON.parse(xhr.response)
+                let success = response.success;
+                if (success) {
+                    document.getElementById('success').style.display = "block";
+                    document.getElementById('code').style.display = "block";
+                } else {
+                    document.getElementById('error').style.display = "block";
+                }
+            }
+        }
+        xhr.send(JSON.stringify(data));
+    });
+
+
+    document.getElementById('check').addEventListener('submit', function (e) {
+        e.preventDefault();
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://api.mircreditov.kz/api/partner/create');
+        xhr.setRequestHeader('Accept', 'application/json');
+        let number = $("#phone").val();
+        let name = $("#name").val();
+        let password = $("#password").val();
+        let type = $("#type").val();
+        let company_name = $("#company_name").val();
+        let address = $("#address").val();
+        let code = $("#code").val();
+
+        let data = {
+            phone: number,
+            name: name,
+            password: password,
+            type: type,
+            company_name: company_name,
+            address: address,
+            code: code,
+        };
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+                let response = JSON.parse(xhr.response)
+                let success = response.success;
+                if (success) {
+                    window.location.href = 'https://api.mircreditov.kz/api/partner-page'
+                } else {
+                    document.getElementById('error').style.display = "block";
+                }
+            }
+        }
+        xhr.send(JSON.stringify(data));
     });
 </script>

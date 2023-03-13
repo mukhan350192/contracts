@@ -37,4 +37,12 @@ class SMSController extends Controller
 
         return response()->noContent();
     }
+
+
+    public function send(Request $request){
+        if (!$request->phone){
+            return response()->fail('Попробуйте позже');
+        }
+        return Sms::send($request->phone);
+    }
 }

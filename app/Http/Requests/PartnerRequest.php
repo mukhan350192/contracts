@@ -11,6 +11,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property $company_name string
  * @property $company_type string
  * @property $address string
+ * @property $code integer
  */
 class PartnerRequest extends FormRequest
 {
@@ -33,6 +34,7 @@ class PartnerRequest extends FormRequest
             'name' => 'required|string',
             'phone' => 'required|string',
             'password' => 'required|string|min:6',
+            'code' => 'required|integer|min:4|max:4'
         ];
     }
 }

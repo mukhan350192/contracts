@@ -37,3 +37,12 @@ Route::get('send',function (){
 Route::get('payment',function (){
     return view('payment');
 });
+Route::get('rates',function (){
+   return view('rates');
+});
+Route::get('dealHistory',function (){
+    return view('deal');
+});
+Route::get('transactionHistory',function (){
+    return view('transaction');
+});

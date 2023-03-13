@@ -21,44 +21,58 @@
 @include('footer')
 <script type="text/javascript">
     let payment = document.getElementById('payment');
-    payment.addEventListener('submit', function (e) {
-        let amount = document.getElementById('amount').value;
-        let token = localStorage.getItem('token');
-        console.log(token, amount)
+    payment.addEventListener('submit', function (e){
         e.preventDefault();
-        let xhr = new XMLHttpRequest();
-        let data = new FormData();
-        data.append('amount',amount);
-        xhr.open('POST','api/partner/pay');
-        xhr.setRequestHeader('Authorization','Bearer '+token);
-        xhr.send(JSON.stringify(data))
-        xhr.onreadystatechange = function (response){
-            if (xhr.readyState == 4 && xhr.status == 200){
-                console.log(xhr.response)
+        let token = localStorage.getItem('token');
+        let amount = $("#amount").val()
+        console.log(amount)
+        $.ajax({
+            type: 'POST',
+            url: 'api/partner/pay',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            data: {
+                amount: amount,
+            },
+            success: function (res) {
+                if (res.success){
+                    window.location.replace(res.url)
+                }
+            },
+            error: function (err) {
+                console.log(err)
             }
-            console.log(xhr.response)
-        }
+
+        });
     });
+
 </script>
 
 
 {{--
-$.ajax({
-type: 'POST',
-url: 'api/partner/payment',
-headers: {
-'Accept': 'application/json',
-'Authorization': 'Bearer ' + token,
-'X-CSRF-TOKEN': {{csrf_token()}},
-},
-data: {
-'amount': amount,
-},
-success: function (res) {
-console.log(res)
-},
-error: function (err) {
-console.log(err)
-}
+--}}
 
+
+{{--
+payment.addEventListener('submit', function (e) {
+let amount = document.getElementById('amount').value;
+let token = localStorage.getItem('token');
+console.log(token, amount)
+e.preventDefault();
+let xhr = new XMLHttpRequest();
+xhr.open('POST','api/partner/pay');
+xhr.setRequestHeader('Authorization','Bearer '+token);
+const data = {
+pay:amount,
+name: 'JOHN',
+};
+
+let json = JSON.stringify(data);
+xhr.onload = function (){
+console.log(xhr.response)
+}
+xhr.send(json)
+console.log(json)
 });--}}

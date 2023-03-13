@@ -18,8 +18,9 @@
                 </div>
                 <div class="form-outline">
                     <label class="title-small">Номер телефона</label>
-                    <input type="text" class="form-control">
-
+                    <input type="text" class="form-control" name="phone">
+                    <label for="" class="title-small">ИИН клиента</label>
+                    <input type="text" class="form-control" name="iin">
                     <div class="d-flex justify-content-center text-center mt-3">
                         <button type="submit" class="btn btn-primary">Отправить смс</button>
                     </div>
@@ -63,6 +64,32 @@
         complete: function () {
             loading.style.display = 'none'; // hide the loading animation
         }
+    });
+
+
+    document.getElementById('send').addEventListener(function (e){
+       e.preventDefault();
+        $.ajax({
+            url: "{{ url('api/partner/send') }}",
+            type: "POST",
+            headers: {
+                'Authorization': 'Bearer ' + token,
+            },
+            success: function (response) {
+                if (response.success) {
+                   document.getElementById('success').style.display = "block";
+                }else{
+                    document.getElementById('fail').style.display = "none";
+                }
+            },
+            error: function (xhr) {
+                // handle the error
+            },
+            complete: function () {
+
+            }
+        });
+
     });
 </script>
 

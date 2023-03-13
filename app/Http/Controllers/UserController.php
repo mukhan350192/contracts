@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DocumentRequest;
 use App\Http\Requests\PartnerRequest;
+use App\Http\Requests\PaymentResultRequest;
 use App\Http\Requests\SignRequest;
+use App\Http\Requests\SMSRequest;
 use App\Http\Services\PartnerService;
+use App\Models\Sms;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -49,5 +52,14 @@ class UserController extends Controller
 
     public function payment(Request $request,PartnerService $service){
         return $service->payment(auth()->user()->id,$request->amount);
+    }
+
+    public function paymentResult(PaymentResultRequest $request,PartnerService $service){
+        return $service->paymentResult($request->extra_user_id,$request->pg_amount,$request->pg_payment_id);
+    }
+
+    public function send(SMSRequest $request,PartnerService $service){
+        $smsID = Sms::make(auth()->user()->id,$request->phone);
+        return $service->send(auth()->user()->id,$request->phone,$request->iin,$smsID,$request->document_id);
     }
 }

@@ -18,20 +18,42 @@
                 </nav>
             </div>
 
-            <div id="loading" style="display: none;">Loading...</div>
             <div class="col-8 p-4">
-                <table class="table">
-                    <thead>
-                    <th scope="col">#</th>
-                    <th scope="col">Название документа</th>
-                    <th scope="col">Статус</th>
-                    </thead>
-                    <tbody id="docs">
+                {{--
+                <div id="loading" style="display: none;">Loading...</div>
+                --}}
+                <div id="loading" class="spinner-box">
+                    <div class="circle-border">
+                        <div class="circle-core"></div>
+                    </div>
+                </div>
+                <div class="panel" id="docs">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col col-sm-3 col-xs-12">
+                                <h4 class="title">Список Документов</h4>
+                            </div>
 
-                    </tbody>
-                </table>
+                        </div>
+                    </div>
+                    <div class="panel-body table-responsive">
+                        <table id="table" class="table" style="display: none;">
+                            <thead>
+                            <th scope="col">#</th>
+                            <th scope="col">Название документа</th>
+                            <th scope="col">Статус</th>
+                            </thead>
+                            <tbody id="docs_content">
+                                <tr>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
     </div>
 </header>
 @include('footer')
@@ -49,9 +71,9 @@
         },
         success: function (response) {
             if (response.success) {
-                let doc = document.getElementById('docs');
+                let doc = document.getElementById('docs_content');
+                console.log(doc)
                 for (let i = 0; i < response.doc.length; i++) {
-                    console.log(response.doc[0].name)
                     let newRow = doc.insertRow();
                     let number = newRow.insertCell();
                     let name = newRow.insertCell();
@@ -59,8 +81,8 @@
                     //let date = newRow.insertCell();
 
                     number.textContent = i + 1;
-                    name.textContent = response.doc[0].name;
-                    status.textContent = response.doc[0].status ? 'Проверен' : 'В проверке';
+                    name.textContent = response.doc[i].name;
+                    status.textContent = response.doc[i].status ? 'Проверен' : 'В проверке';
                     //date.textContent = response.doc[0].created_at
 
                 }
@@ -71,6 +93,8 @@
         },
         complete: function () {
             loading.style.display = 'none'; // hide the loading animation
+            document.getElementById('table').style.display = "block"
         }
     });
+
 </script>

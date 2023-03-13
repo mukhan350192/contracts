@@ -26,10 +26,22 @@
                     <a class="nav-link" href="#">Pricing</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    <a class="nav-link" id="personal">Личный кабинет</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+    const personal = document.getElementById('personal');
+    personal.addEventListener("click",function (event){
+       event.preventDefault();
+       let token = localStorage.getItem('token')
+        if (token){
+            window.location.href = 'partner-page'
+        }else{
+            window.location.href = 'login'
+        }
+    });
+</script>

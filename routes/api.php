@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\SMSController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,16 +24,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('partner/create',[UserController::class,'create']);
 Route::post('partner/sign',[UserController::class,'sign']);
-
+Route::post('paymentResult',[UserController::class,'paymentResult']);
 Route::middleware(['auth:sanctum', 'abilities:partner'])->group(function (): void {
     Route::prefix('partner')->group(function(){
         Route::post('/addDocs',[UserController::class,'addDocs']);
         Route::post('pay',[UserController::class,'payment']);
+
         Route::get('getActiveDocs',[UserController::class,'getActiveDocs']);
         Route::get('getDocs',[UserController::class,'getDocs']);
+
+        Route::post('send',[UserController::class,'send']);
     });
 });
-
+Route::any('infobip',[SMSController::class,'infobip'])->name('infobip');
 Route::prefix('manager')->group(function(){
    Route::post('/create',[ManagerController::class,'create']);
    Route::post('/approve',[ManagerController::class,'approve']);

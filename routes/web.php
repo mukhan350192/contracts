@@ -48,3 +48,15 @@ Route::get('transactionHistory',function (){
     return view('transaction');
 });
 Route::get('sign/{token}',[ShortURLController::class,'sign']);
+
+Route::get('client-page',function (){
+    return view('client-page');
+});
+
+Route::get('super-admin',function (){
+    return view('super-admin');
+});
+
+Route::get('manager-page',function (){
+    return view('manager-page');
+});

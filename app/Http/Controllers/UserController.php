@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\clientRequest;
 use App\Http\Requests\DocumentRequest;
 use App\Http\Requests\PartnerRequest;
 use App\Http\Requests\PaymentResultRequest;
 use App\Http\Requests\SignRequest;
 use App\Http\Requests\SMSRequest;
+use App\Http\Services\ClientService;
+use App\Http\Services\ManagerService;
 use App\Http\Services\PartnerService;
 use App\Models\Sms;
 use Illuminate\Http\JsonResponse;
@@ -21,7 +24,7 @@ class UserController extends Controller
      */
     public function create(PartnerRequest $request, PartnerService $service): JsonResponse
     {
-        return $service->create($request->name, $request->phone, $request->password, $request->company_name, $request->company_type, $request->address,$request->code,$request->iin);
+        return $service->create($request->name, $request->phone, $request->password, $request->company_name, $request->company_type, $request->address, $request->code, $request->iin);
     }
 
     /**
@@ -50,21 +53,39 @@ class UserController extends Controller
         return $service->getActiveDocs(auth()->user()->id);
     }
 
-    public function payment(Request $request,PartnerService $service){
-        return $service->payment(auth()->user()->id,$request->amount);
+    public function payment(Request $request, PartnerService $service)
+    {
+        return $service->payment(auth()->user()->id, $request->amount);
     }
 
-    public function paymentResult(Request $request,PartnerService $service){
-        if (!$request->extra_user_id || !$request->pg_amount || !$request->pg_payment_id){
+    public function paymentResult(Request $request, PartnerService $service)
+    {
+        if (!$request->extra_user_id || !$request->pg_amount || !$request->pg_payment_id) {
             return response()->fail('Попробуйте позже');
         }
-        return $service->paymentResult($request->extra_user_id,$request->pg_amount,$request->pg_payment_id);
+        return $service->paymentResult($request->extra_user_id, $request->pg_amount, $request->pg_payment_id);
     }
 
-    public function send(SMSRequest $request,PartnerService $service){
-       // var_dump($request);
-        $smsID = Sms::make(auth()->user()->id,$request->phone);
+    public function send(SMSRequest $request, PartnerService $service)
+    {
+        // var_dump($request);
+        $smsID = Sms::make(auth()->user()->id, $request->phone);
         //var_dump($smsID);
-        return $service->send(auth()->user()->id,$request->phone,$request->iin,$smsID,$request->document_id);
+        return $service->send(auth()->user()->id, $request->phone, $request->iin, $smsID, $request->document_id);
+    }
+
+    public function clientCreate(clientRequest $request, ClientService $service): JsonResponse
+    {
+        return $service->create($request->iin, $request->password, $request->phone, $request->id);
+    }
+
+    public function getClientDocs(ClientService $service)
+    {
+        return $service->clientDocs(auth()->user()->id);
+    }
+
+    public function managerCreate(Request $request, ManagerService $service)
+    {
+        return $service->create($request->phone,$request->password,$request->iin,$request->name);
     }
 }

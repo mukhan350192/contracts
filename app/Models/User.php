@@ -51,6 +51,8 @@ class User extends Authenticatable
             'name' => $name,
             'phone' => $phone,
             'password' => bcrypt($password),
+            'user_type' => 3,
+
         ]);
         $token = $user->createToken('api', ['manager'])->plainTextToken;
         return response()->success(['token' => $token]);

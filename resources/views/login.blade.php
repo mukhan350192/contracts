@@ -53,8 +53,17 @@
                 let success = response.success;
                 if (success) {
                     let token = response.token;
+                    let type = response.type;
                     localStorage.setItem('token', token);
-                    window.location.href = 'partner-page';
+                    if (type == 1){
+                        window.location.href = 'partner-page';
+                    }
+                    if (type == 2){
+                        window.location.href = 'client-page';
+                    }
+                    if (type == 3){
+                        window.location.href = 'manager-page';
+                    }
                 } else {
                     document.getElementById('error').style.display = "block";
                 }

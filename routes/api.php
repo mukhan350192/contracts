@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::post('sendSMS',[SMSController::class,'send']);
 Route::post('partner/create',[UserController::class,'create']);
+Route::post('manager/add/account',[UserController::class,'managerCreate']);
 Route::post('partner/sign',[UserController::class,'sign']);
 Route::post('paymentResult',[UserController::class,'paymentResult']);
 Route::middleware(['auth:sanctum', 'abilities:partner'])->group(function (): void {
@@ -39,5 +40,18 @@ Route::middleware(['auth:sanctum', 'abilities:partner'])->group(function (): voi
 Route::any('infobip',[SMSController::class,'infobip'])->name('infobip');
 Route::prefix('manager')->group(function(){
    Route::post('/create',[ManagerController::class,'create']);
-   Route::post('/approve',[ManagerController::class,'approve']);
+
+});
+
+Route::post('client/create',[UserController::class,'clientCreate']);
+Route::middleware(['auth:sanctum', 'abilities:client'])->group(function(): void{
+   Route::prefix('client')->group(function ():void{
+      Route::get('getDocs',[UserController::class,'getClientDocs']);
+   });
+});
+Route::middleware(['auth:sanctum','abilities:manager'])->group(function():void{
+   Route::prefix('manager')->group(function(){
+       Route::get('getAllDocs',[ManagerController::class,'getAll']);
+       Route::post('approve',[ManagerController::class,'approve']);
+    });
 });

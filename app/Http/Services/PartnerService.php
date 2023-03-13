@@ -29,7 +29,7 @@ class PartnerService
         string|null $company_type,
         string|null $address,
         int         $code,
-        string $iin
+        string      $iin
     )
     {
         $check = DB::table('sms_confirmation')->where('phone', $phone)->where('code', $code)->first();
@@ -79,12 +79,18 @@ class PartnerService
         if (!Hash::check($password, $user->password)) {
             return response()->fail('Неправильный логин или пароль');
         }
-        $token = $user->createToken('api', ['partner'])->plainTextToken;
+        $user_types = [
+            1 => 'partner',
+            2 => 'client',
+            3 => 'manager',
+        ];
+        $token = $user->createToken('api', [$user_types[$user->user_type]])->plainTextToken;
 
 
         $docs = [
             'token' => $token,
             'success' => true,
+            'type' => $user->user_type,
         ];
         return response()->success($docs);
     }

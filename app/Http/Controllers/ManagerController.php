@@ -29,4 +29,8 @@ class ManagerController extends Controller
     {
         return $service->approve($request->documentID);
     }
+
+    public function getAll(Request $request, ManagerService $service):JsonResponse{
+        return $service->getAll(auth()->user()->id);
+    }
 }

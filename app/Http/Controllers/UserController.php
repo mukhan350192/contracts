@@ -21,7 +21,7 @@ class UserController extends Controller
      */
     public function create(PartnerRequest $request, PartnerService $service): JsonResponse
     {
-        return $service->create($request->name, $request->phone, $request->password, $request->company_name, $request->company_type, $request->address,$request->code);
+        return $service->create($request->name, $request->phone, $request->password, $request->company_name, $request->company_type, $request->address,$request->code,$request->iin);
     }
 
     /**

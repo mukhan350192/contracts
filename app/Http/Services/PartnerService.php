@@ -26,13 +26,14 @@ class PartnerService
         string      $phone,
         string      $password,
         string|null $company_name,
-        string      $company_type,
+        string|null $company_type,
         string|null $address,
-        int         $code
+        int         $code,
+        string $iin
     )
     {
-        $check = DB::table('sms_confirmation')->where('phone',$phone)->where('code',$code)->first();
-        if (!$check){
+        $check = DB::table('sms_confirmation')->where('phone', $phone)->where('code', $code)->first();
+        if (!$check) {
             return response()->fail('Код не совпадает');
         }
         $user = User::create([
@@ -40,6 +41,7 @@ class PartnerService
             'phone' => $phone,
             'password' => $password,
             'user_type' => 1,
+            'iin' => $iin,
         ]);
         if (!$user) {
             return response()->fail('Попробуйте позже');
@@ -52,7 +54,7 @@ class PartnerService
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
-        return redirect()->route('partner-page', ['token' => $token]);
+        return response()->success(['token' => $token]);
     }
 
     public function addDocs($doc, string $name, int $userID)
@@ -190,6 +192,8 @@ class PartnerService
             'document_id' => $documentID,
             'token' => $token,
             'user_id' => $userID,
+            'phone' => $phone,
+            'iin' => $iin,
         ]);
         $link = 'https://api.mircreditov.kz/sign/' . $token;
         $messages = [

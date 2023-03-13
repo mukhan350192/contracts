@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @property $name string
  * @property $phone string
+ * @property $iin string
  * @property $password string
  * @property $company_name string
  * @property $company_type string
@@ -34,7 +35,8 @@ class PartnerRequest extends FormRequest
             'name' => 'required|string',
             'phone' => 'required|string',
             'password' => 'required|string|min:6',
-            'code' => 'required|integer|min:4|max:4'
+            'code' => 'required|integer',
+            'iin' => 'required|string'
         ];
     }
 }

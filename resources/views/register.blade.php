@@ -18,6 +18,14 @@
                 </div>
 
                 <div class="form-outline mb-4 text-center fs-3">
+                    <label for="iin"><strong>ИИН</strong></label>
+                    <input type="number" id="iin"
+                           class="form-control input-lg bg-light"
+                           name="iin"
+                           value="{{old('iin')}} required autofocus">
+                </div>
+
+                <div class="form-outline mb-4 text-center fs-3">
                     <label for="phone"><strong>Телефон</strong></label>
                     <input type="number" id="phone"
                            class="form-control input-lg bg-light @error('phone') is-invalid @enderror"
@@ -67,16 +75,21 @@
                 </div>
                 <div class="form-outline mb-4 text-center fs-3" id="code" style="display: none;">
                     <label for="password"><strong>Код подтверждение</strong></label>
-                    <input type="number" class="form-control">
+                    <input type="number" class="form-control" id="codeNumber">
                 </div>
-                <button type="submit" class="form-control mb-4 text-center fs-3 p-3 register">Регистрация</button>
-                <label for="sign"><h1><a id="login" href="login" class="form-control mb-4 text-center ml-4">Войти</a>
-                    </h1></label>
+                <div class="form-outline mb-4 text-center fs-3" id="button">
+                    <button type="submit" class="form-control mb-4 text-center fs-3 p-3 register">Регистрация</button>
+                    <label for="sign"><h1><a id="login" href="login"
+                                             class="form-control mb-4 text-center ml-4">Войти</a>
+                        </h1></label>
+                </div>
+
 
             </form>
-            <button id="check" type="submit" class="form-control mb-4 text-center fs-3 p-3 register"
-                    style="display: none;">Подтвердить
-            </button>
+            <form action="api/partner/create" id="check" method="post" style="display: none;">
+                @csrf
+                <button type="submit" class="form-control mb-4 text-center fs-3 p-3 register">Подтвердить</button>
+            </form>
         </div>
     </div>
 </div>
@@ -96,62 +109,80 @@
     });
     document.getElementById('reg').addEventListener('submit', function (e) {
         e.preventDefault();
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://api.mircreditov.kz/api/sendSMS');
-        xhr.setRequestHeader('Accept', 'application/json');
-        let number = document.getElementById('phone').value;
-        let data = {
-            phone: number,
-        };
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
-                let response = JSON.parse(xhr.response)
-                let success = response.success;
-                if (success) {
-                    document.getElementById('success').style.display = "block";
+        let number = $("#phone").val();
+        $.ajax({
+            type: 'POST',
+            url: 'api/sendSMS',
+            headers: {
+                'Accept': 'application/json',
+            },
+
+            data: {
+                phone: number,
+            },
+            success: function (res) {
+                if (res.success) {
                     document.getElementById('code').style.display = "block";
+                    document.getElementById('button').style.display = "none";
+                    document.getElementById('check').style.display = "block";
                 } else {
                     document.getElementById('error').style.display = "block";
                 }
+                console.log(res)
+            },
+            error: function (err) {
+                document.getElementById('error').style.display = "block";
             }
-        }
-        xhr.send(JSON.stringify(data));
+
+        });
+
     });
 
 
     document.getElementById('check').addEventListener('submit', function (e) {
         e.preventDefault();
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://api.mircreditov.kz/api/partner/create');
-        xhr.setRequestHeader('Accept', 'application/json');
+
         let number = $("#phone").val();
         let name = $("#name").val();
         let password = $("#password").val();
         let type = $("#type").val();
         let company_name = $("#company_name").val();
         let address = $("#address").val();
-        let code = $("#code").val();
+        let code = $("#codeNumber").val();
+        let iin = $("#iin").val();
 
-        let data = {
-            phone: number,
-            name: name,
-            password: password,
-            type: type,
-            company_name: company_name,
-            address: address,
-            code: code,
-        };
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
-                let response = JSON.parse(xhr.response)
-                let success = response.success;
-                if (success) {
-                    window.location.href = 'https://api.mircreditov.kz/api/partner-page'
-                } else {
-                    document.getElementById('error').style.display = "block";
+        console.log(iin);
+        $.ajax({
+            type: 'POST',
+            url: 'api/partner/create',
+            headers: {
+                'Accept': 'application/json',
+            },
+
+            data: {
+                iin: iin,
+                phone: number,
+                name: name,
+                password: password,
+                company_type: type,
+                company_name: company_name,
+                address: address,
+                code: code,
+            },
+
+            success: function (res) {
+
+                if (res.success) {
+                    let token = res.token;
+                    localStorage.setItem('token',token)
+                    window.location.href = "https://api.mircreditov.kz/partner-page";
                 }
+            },
+            error: function (err) {
+                console.log(err)
+                console.log(data)
             }
-        }
-        xhr.send(JSON.stringify(data));
+
+        });
     });
 </script>

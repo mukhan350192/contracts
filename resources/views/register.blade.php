@@ -78,10 +78,7 @@
                     <input type="number" class="form-control" id="codeNumber">
                 </div>
                 <div class="form-outline mb-4 text-center fs-3" id="button">
-                    <button type="submit" class="form-control mb-4 text-center fs-3 p-3 register">Регистрация</button>
-                    <label for="sign"><h1><a id="login" href="login"
-                                             class="form-control mb-4 text-center ml-4">Войти</a>
-                        </h1></label>
+                    <button type="submit" class="btn btn-danger text-center fs-3 p-3">Регистрация</button>
                 </div>
 
 

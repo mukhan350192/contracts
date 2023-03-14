@@ -3,6 +3,7 @@
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\SMSController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerigramController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -55,3 +56,5 @@ Route::middleware(['auth:sanctum','abilities:manager'])->group(function():void{
        Route::post('approve',[ManagerController::class,'approve']);
     });
 });
+//verigram
+Route::post('getAccessToken',[VerigramController::class,'getAccessToken']);

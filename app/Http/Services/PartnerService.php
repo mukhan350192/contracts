@@ -13,13 +13,6 @@ use Illuminate\Support\Str;
 
 class PartnerService
 {
-    protected int $merchantID = 538153;
-    protected string $url = 'https://api.paybox.money/payment.php';
-    protected string $paymentKey = 'hbmWS9krWO1Sd57Z';
-    protected string $result_url = 'https://api.mircreditov.kz/api/paymentResult';
-
-    protected string $infobipURL = 'https://xr5ep4.api.infobip.com';
-    protected string $key = '5aec06024478c7dc093f9ebcb40059d6-7b002e63-a891-48b4-a4c5-2edb3c065926';
 
     public function create(
         string      $name,
@@ -127,24 +120,24 @@ class PartnerService
         $description = 'Оплата за услугу';
         $data = [
             'extra_user_id' => $userID,
-            'pg_merchant_id' => $this->merchantID,//our id in Paybox, will be gived on contract
+            'pg_merchant_id' => env('MERCHANT_ID'),//our id in Paybox, will be gived on contract
             'pg_amount' => $amount, //amount of payment
             'pg_salt' => "Salt", //amount of payment
             'pg_order_id' => $userID, //id of purchase, strictly unique
             'pg_description' => $description, //will be shown to client in process of payment, required
-            'pg_result_url' => $this->result_url,//route('payment-result')
+            'pg_result_url' =>env('RESULT_URL'),//route('payment-result')
             'pg_success_url' => $success_url,
         ];
         ksort($data);
         array_unshift($data, 'payment.php');
-        array_push($data, $this->paymentKey);
+        array_push($data, env('PAYMENT_KEY'));
 
         $data['pg_sig'] = md5(implode(';', $data));
 
         unset($data[0], $data[1]);
 
         $query = http_build_query($data);
-        return response()->success(['url' => $this->url . '?' . $query]);
+        return response()->success(['url' => env('PAYBOX_URL') . '?' . $query]);
     }
 
     public function paymentResult(int $extra_user_id, float $pg_amount, string $transaction_id)
@@ -217,9 +210,9 @@ class PartnerService
         ];
 
         $request = Http::withoutVerifying()
-            ->baseUrl($this->infobipURL)
+            ->baseUrl(env('BIPURL'))
             ->withHeaders([
-                'Authorization' => 'App ' . $this->key,
+                'Authorization' => 'App ' . env('BIPKEY'),
             ])->asJson()->post('/sms/2/text/advanced', [
                 'messages' => $messages,
             ]);

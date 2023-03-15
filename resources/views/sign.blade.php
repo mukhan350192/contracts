@@ -33,7 +33,7 @@
                 </div>
                 <h3>Results of scanning:</h3>
                 <p id="results">No scanning results yet</p>
-
+                <p id="array">No scanning results yet</p>
             </form>
         </div>
         <textarea style="display: none" id="customTranslations" rows="5" cols="50">{
@@ -208,6 +208,7 @@
     }
     function showResults(data) {
         var allResults = "";
+        const all = [];
         for (var prop in data) {
             if (data.hasOwnProperty(prop) && typeof data[prop] === 'string' || data[prop] instanceof String) {
                 var propValue = data[prop].replace(/</g, "&lt;");
@@ -215,6 +216,7 @@
                 if (prop.includes('picture') || prop.includes('personal_signature') ||
                     prop.includes('image')) {
                     allResults += prop + ': ' + propValue.substring(0, 20) + '... </br>';
+                    all[prop] = propValue.substring(0,20);
                 } else {
                     allResults += prop + ': ' + propValue + ' </br>';
                 }
@@ -222,6 +224,7 @@
         }
 
         document.getElementById("results").innerHTML = allResults;
+        document.getElementById("array").innerHTML = all;
     }
     function failCallback(data) {
         console.log('fail', data);

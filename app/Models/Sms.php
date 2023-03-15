@@ -27,9 +27,6 @@ class Sms extends Model
     }
 
     public static function send(string $phone){
-        $infobipURL = 'https://xr5ep4.api.infobip.com';
-        $key = '5aec06024478c7dc093f9ebcb40059d6-7b002e63-a891-48b4-a4c5-2edb3c065926';
-
         $code = rand(1000,9999);
         $smsID = DB::table('sms_confirmation')->insertGetId([
            'code' => $code,
@@ -52,9 +49,9 @@ class Sms extends Model
         ];
 
         $request = Http::withoutVerifying()
-            ->baseUrl($infobipURL)
+            ->baseUrl(env('BIPURL'))
             ->withHeaders([
-                'Authorization' => 'App '.$key,
+                'Authorization' => 'App '.env('BIPKEY'),
             ])->asJson()->post('/sms/2/text/advanced', [
                 'messages' => $messages,
             ]);

@@ -217,7 +217,7 @@
                     prop.includes('image')) {
                     // allResults += prop + ': ' + propValue.substring(0, 20) + '... </br>';
                     // all[prop] = propValue.substring(0,20);
-                    document.getElementById("array").innerHTML = prop.":".propValue.substring(0,20);
+                    document.getElementById("array").innerHTML = "prop:"+prop+":value"+propValue.substring(0,20);
                 } else {
                     allResults += prop + ': ' + propValue + ' </br>';
                 }

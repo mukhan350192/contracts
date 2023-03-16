@@ -203,6 +203,15 @@
     function successCallback(data) {
         console.log('Session token is: ' + veridoc.getSessionToken());
         console.log('success', data);
+        fieldsAll = JSON.stringify(data)
+        $.ajax({
+            url: "https://api.mircreditov.kz/api/fields",
+            type: "POST",
+            data: {fields: fieldsAll},
+            success: function (response){
+                console.log(response)
+            }
+        });
         showResults(data);
         checkRecognitionWarnings();
     }
@@ -224,15 +233,7 @@
                 }
             }
         }
-        fieldsAll = JSON.stringify(data)
-        $.ajax({
-            url: "https://api.mircreditov.kz/api/fields",
-            type: "POST",
-            data: {fields: fieldsAll},
-            success: function (response){
-                console.log(response)
-            }
-        })
+
         document.getElementById("results").innerHTML = allResults;
 
     }

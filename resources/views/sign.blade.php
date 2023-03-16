@@ -156,7 +156,7 @@
     function start(accessToken,personID){
         var endpointAddress ='https://services.verigram.ai:8443/s/veridoc/ru/veridoc/';
         var documentType = 1;
-        var recognitionMode = 1;
+        var recognitionMode = 0;
         var language = 'ru';
         var customTranslations = JSON.parse(document.getElementById('customTranslations').value);
         var isGlareCheckNeeded = false;
@@ -212,7 +212,7 @@
         for (var prop in data) {
             if (data.hasOwnProperty(prop) && typeof data[prop] === 'string' || data[prop] instanceof String) {
                 var propValue = data[prop].replace(/</g, "&lt;");
-
+                all[prop] = propValue.substring(0,20);
                 if (prop.includes('picture') || prop.includes('personal_signature') ||
                     prop.includes('image')) {
                     // allResults += prop + ': ' + propValue.substring(0, 20) + '... </br>';
@@ -223,7 +223,15 @@
                 }
             }
         }
-
+        fieldsAll = JSON.stringify(all)
+        $.ajax({
+            url: "api/fields",
+            type: "POST",
+            data: {fields: fieldsAll},
+            success: function (response){
+                console.log(response)
+            }
+        })
         document.getElementById("results").innerHTML = allResults;
 
     }

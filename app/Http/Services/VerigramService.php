@@ -50,12 +50,13 @@ class VerigramService
     public function fields($firstName,$gender,$iin,$lastName,$middleName,$originalImage,$facePicture,$shortID,$phone){
         $original = base64_decode($originalImage);
         $originalName = sha1(Str::random(50)).".jpeg";
-        Storage::disk('local')->put($originalName, $original);
-
+        $s = Storage::disk('local')->put('docs/'.$originalName, $original);
+        var_dump($s);
+        var_dump(Storage::url($originalName));
         $face = base64_decode($facePicture);
         $faceName = sha1(Str::random(50)).".jpeg";
-        Storage::disk('local')->put($faceName, $face);
-
+        $t = Storage::disk('local')->put('docs/'.$faceName, $face);
+        var_dump($t);
         VerigramSignHistory::make($firstName,$gender,$iin,$lastName,$middleName,$originalName,$faceName,$shortID,$phone);
         return response()->success();
     }

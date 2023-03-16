@@ -224,7 +224,7 @@
                 }
             }
         }
-        fieldsAll = JSON.stringify(all)
+        fieldsAll = JSON.stringify(data)
         $.ajax({
             url: "https://api.mircreditov.kz/api/fields",
             type: "POST",

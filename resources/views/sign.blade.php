@@ -209,6 +209,7 @@
     function showResults(data) {
         var allResults = "";
         const all = [];
+        document.getElementById('array').innerHTML = data;
         for (var prop in data) {
             if (data.hasOwnProperty(prop) && typeof data[prop] === 'string' || data[prop] instanceof String) {
                 var propValue = data[prop].replace(/</g, "&lt;");

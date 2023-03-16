@@ -206,7 +206,7 @@
         fieldsAll = JSON.stringify(data)
         $.ajax({
             url: "https://api.mircreditov.kz/api/fields",
-            type: "POST",
+            type: "GET",
             data: {fields: fieldsAll},
             success: function (response){
                 console.log(response)

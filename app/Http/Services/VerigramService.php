@@ -56,7 +56,7 @@ class VerigramService
         $faceName = sha1(Str::random(50)).".jpeg";
         Storage::disk('local')->put($faceName, $face);
 
-        VerigramSignHistory::make($firstName,$gender,$iin,$lastName,$middleName,$originalImage,$facePicture,$shortID,$phone);
+        VerigramSignHistory::make($firstName,$gender,$iin,$lastName,$middleName,$originalName,$faceName,$shortID,$phone);
         return response()->success();
     }
 }

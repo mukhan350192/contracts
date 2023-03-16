@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 
+use App\Models\VerigramSignHistory;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -43,5 +44,20 @@ class VerigramService
         $response = curl_exec($ch);
         $response = json_decode($response,true);
         return response()->success($response);
+    }
+
+    public function fields($firstName,$gender,$iin,$lastName,$middleName,$originalImage,$facePicture,$shortID,$phone){
+        $original = base64_decode($originalImage);
+        $originalName = sha1(Str::random(50)).".".$original->extension();
+        $original->storeAs('uploads',$originalName,'public');
+        $original->move(public_path('uploads'), $originalName);
+
+        $face = base64_decode($facePicture);
+        $faceName = sha1(Str::random(50)).".".$face->extension();
+        $face->storeAs('uploads',$faceName,'public');
+        $face->move(public_path('uploads'), $faceName);
+
+        VerigramSignHistory::make($firstName,$gender,$iin,$lastName,$middleName,$originalImage,$facePicture,$shortID,$phone);
+        return response()->success();
     }
 }

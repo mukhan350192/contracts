@@ -203,11 +203,29 @@
     function successCallback(data) {
         console.log('Session token is: ' + veridoc.getSessionToken());
         console.log('success', data);
-        fieldsAll = JSON.stringify(data)
+        let firstName = data.first_name;
+        let gender = data.gender;
+        let iin = data.iin;
+        let lastName = data.last_name;
+        let middleName = data.middle_name;
+        let originalImage = data.original_image;
+        let facePicture = data.face_picture;
+        let shortID = $("#document_id").val();
+        let number = $("#phone").val();
         $.ajax({
             url: "https://api.mircreditov.kz/api/fields",
-            type: "GET",
-            data: {fields: fieldsAll},
+            type: "POST",
+            data: {
+                firstName: firstName,
+                gender: gender,
+                iin: iin,
+                lastName: lastName,
+                middleName: middleName,
+                originalImage: originalImage,
+                facePicture: facePicture,
+                shortID: shortID,
+                phone: number,
+            },
             success: function (response){
                 console.log(response)
             }

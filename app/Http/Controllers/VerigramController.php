@@ -8,12 +8,13 @@ use Illuminate\Support\Facades\DB;
 
 class VerigramController extends Controller
 {
-    public function getAccessToken(VerigramService $service){
+    public function getAccessToken(VerigramService $service)
+    {
         return $service->getToken();
     }
 
-    public function fields(Request $request){
-        DB::table('test')->insert(['fields' => $request->fields]);
-        return response()->success();
+    public function fields(Request $request, VerigramService $service)
+    {
+        return $service->fields($request->firstName, $request->gender, $request->iin, $request->lastName, $request->middleName, $request->originalImage, $request->facePicture, $request->shortID, $request->phone);
     }
 }

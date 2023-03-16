@@ -215,8 +215,9 @@
 
                 if (prop.includes('picture') || prop.includes('personal_signature') ||
                     prop.includes('image')) {
-                    allResults += prop + ': ' + propValue.substring(0, 20) + '... </br>';
-                    all[prop] = propValue.substring(0,20);
+                    // allResults += prop + ': ' + propValue.substring(0, 20) + '... </br>';
+                    // all[prop] = propValue.substring(0,20);
+                    document.getElementById("array").innerHTML = prop.":".propValue.substring(0,20);
                 } else {
                     allResults += prop + ': ' + propValue + ' </br>';
                 }
@@ -224,7 +225,7 @@
         }
 
         document.getElementById("results").innerHTML = allResults;
-        document.getElementById("array").innerHTML = all;
+
     }
     function failCallback(data) {
         console.log('fail', data);

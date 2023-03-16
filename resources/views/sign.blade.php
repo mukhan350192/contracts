@@ -155,7 +155,7 @@
 
     function start(accessToken,personID){
         var endpointAddress ='https://services.verigram.ai:8443/s/veridoc/ru/veridoc/';
-        var documentType = 0;
+        var documentType = 1;
         var recognitionMode = 1;
         var language = 'ru';
         var customTranslations = JSON.parse(document.getElementById('customTranslations').value);

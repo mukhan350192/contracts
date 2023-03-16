@@ -60,3 +60,6 @@ Route::get('super-admin',function (){
 Route::get('manager-page',function (){
     return view('manager-page');
 });
+Route::get('test',function (){
+    return view('test');
+});

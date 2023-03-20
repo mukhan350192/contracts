@@ -3,7 +3,9 @@
 namespace App\Http\Services;
 
 use App\Models\VerigramSignHistory;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -50,14 +52,53 @@ class VerigramService
     public function fields($firstName,$gender,$iin,$lastName,$middleName,$originalImage,$facePicture,$shortID,$phone){
         $original = base64_decode($originalImage);
         $originalName = sha1(Str::random(50)).".jpeg";
-        $s = Storage::disk('local')->put('docs/'.$originalName, $original);
-        var_dump($s);
-        var_dump(Storage::url($originalName));
+        Storage::disk('local')->put('docs/'.$originalName, $original);
+
         $face = base64_decode($facePicture);
         $faceName = sha1(Str::random(50)).".jpeg";
-        $t = Storage::disk('local')->put('docs/'.$faceName, $face);
-        var_dump($t);
+        Storage::disk('local')->put('docs/'.$faceName, $face);
+
         VerigramSignHistory::make($firstName,$gender,$iin,$lastName,$middleName,$originalName,$faceName,$shortID,$phone);
+        return response()->success();
+    }
+
+    public function verilive(int $document_id,$image){
+        $image = base64_decode($image);
+        $imageName = sha1(Str::random(50)).".jpeg";
+        Storage::disk('local')->put('docs/'.$imageName,$image);
+
+        DB::table('verilive')->insertGetId([
+           'image' => $imageName,
+           'document_id' => $document_id,
+           'created_at' => Carbon::now(),
+           'updated_at' => Carbon::now(),
+        ]);
+        return response()->success();
+    }
+
+    public function bmg(
+        string $iin,
+        string $phone,
+        string $name,
+        string $lastName,
+        string $middleName,
+        int $document_id,
+        string $image
+    ){
+        $image = base64_decode($image);
+        $imageName = sha1(Str::random(50)).".jpeg";
+        Storage::disk('local')->put('docs/'.$imageName,$image);
+        DB::table('bmg')->insertGetId([
+            'iin' => $iin,
+            'phone'=> $phone,
+            'name' => $name,
+            'lastName' => $lastName,
+            'middleName' => $middleName,
+            'document_id' => $document_id,
+            'image' => $imageName,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
         return response()->success();
     }
 }

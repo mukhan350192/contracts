@@ -1,13 +1,30 @@
 #main_menu{
-    margin-left: 250px;
+    margin-left: 120px;
+}
+#navbarNav{
+    margin-left: 180px;
+}
+.nav-item{
+    margin-left: 50px;
+}
+#personal{
+    margin-left: 100px;
+}
+.icon-info p{
+    font-size: 12px;
+}
+.icon-info h5{
+    font-size: 14px;
 }
 .w3-services-ab{
     background: var(--bg-grey);
 }
+
 .title-small {
     font-size: 14px;
     font-weight: 500;
     text-transform: uppercase;
+    font-family: 'Spartan', sans-serif;
     line-height: 30px;
     letter-spacing: 1px;
     color: #7e7d7d;
@@ -40,9 +57,18 @@
     border-top: 2px solid #ff4f81;
 }
 .w3l-bottom-grids-6 .area-box {
-    padding: 40px 30px;
-    border-radius: var(--border-radius);
+    padding: 20px 10px;
+    border-radius: 10px;
     text-align: center;
+}
+.area-box p{
+    font-size: 12px;
+}
+.area-box h4{
+    font-size: 14px;
+}
+#howItWorks h3{
+    font-size: 18px;
 }
 .w3l-bottom-grids-6 h4 a.title-head {
     font-size: 22px;
@@ -138,8 +164,9 @@ a, a:hover {
 }
 .w3l-footer .footer-list-28 ul li a, .w3l-footer .footer-list-28 ul li p {
     color: #a3a3a7;
-    line-height: 28px;
+    line-height: 14px;
     font-family: 'Spartan', sans-serif;
+    font-size: 14px;
 }
 b, strong {
     font-weight: bolder;

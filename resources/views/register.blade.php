@@ -172,7 +172,7 @@
                 if (res.success) {
                     let token = res.token;
                     localStorage.setItem('token',token)
-                    window.location.href = "https://api.mircreditov.kz/partner-page";
+                    window.location.href = "partner-page";
                 }
             },
             error: function (err) {

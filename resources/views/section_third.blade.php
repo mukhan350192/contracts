@@ -3,7 +3,10 @@
 
         <h3 class="title-big text-center mb-5">Как работает наш сервис?</h3>
         <div class="grids-area-hny main-cont-wthree-fea row">
-            <div class="col-lg-4 col-md-6 grids-feature">
+            <div class="col-lg-1">
+
+            </div>
+            <div class="col-lg-3 col-md-6 grids-feature">
                 <div class="area-box">
                     <img src="{{asset('assets/images/document.png')}}" alt="" class="img-fluid" width="96px" height="96px">
                     <h4>
@@ -14,8 +17,11 @@
                 </div>
             </div>
 
+            <div class="col-lg-1">
 
-            <div class="col-lg-4 col-md-6 grids-feature mt-md-0 mt-4">
+            </div>
+
+            <div class="col-lg-3 col-md-6 grids-feature mt-md-0 mt-4">
                 <div class="area-box box-active">
                     <img src="{{asset('assets/images/digital-signature.png')}}" alt="" class="img-fluid" width="96px" height="96px">
                     <h4>
@@ -25,8 +31,11 @@
                         вторым подписантом.</p>
                 </div>
             </div>
+            <div class="col-lg-1">
 
-            <div class="col-lg-4 col-md-6 grids-feature mt-lg-0 mt-4">
+            </div>
+
+            <div class="col-lg-3 col-md-6 grids-feature mt-lg-0 mt-4">
                 <div class="area-box">
                     <img src="{{asset('assets/images/work-in-progress.png')}}" alt="" class="img-fluid" width="96px" height="96px">
                     <h4>
@@ -36,6 +45,7 @@
                         мессенджер) и хранится в вашем Личном кабинете неограниченное количество времени.</p>
                 </div>
             </div>
+
         </div>
     </div>
 </section>

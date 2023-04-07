@@ -6,6 +6,7 @@ use App\Models\Payment;
 use App\Models\ShortURL;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
@@ -13,6 +14,19 @@ use Illuminate\Support\Str;
 
 class PartnerService
 {
+    public string $url = "http://nash-crm.kz/api/contracts/createLead.php";
+
+    /**
+     * @param string $name
+     * @param string $phone
+     * @param string $password
+     * @param string|null $company_name
+     * @param string|null $company_type
+     * @param string|null $address
+     * @param int $code
+     * @param string $iin
+     * @return JsonResponse
+     */
 
     public function create(
         string      $name,
@@ -23,7 +37,7 @@ class PartnerService
         string|null $address,
         int         $code,
         string      $iin
-    )
+    ): JsonResponse
     {
         $check = DB::table('sms_confirmation')->where('phone', $phone)->where('code', $code)->first();
         if (!$check) {
@@ -47,10 +61,40 @@ class PartnerService
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
+        $this->sendToBitrix($name, $phone, $password, $code, $iin, $company_name, $company_type, $address);
         return response()->success(['token' => $token]);
     }
 
-    public function addDocs($doc, string $name, int $userID)
+    /**
+     * @param $name
+     * @param $phone
+     * @param $password
+     * @param $code
+     * @param $iin
+     * @param $company_name
+     * @param $company_type
+     * @param $address
+     * @return bool
+     */
+
+    public function sendToBitrix($name, $phone, $password, $code, $iin, $company_name, $company_type, $address)
+    {
+        $url = $this->url . "?name={$name}&phone={$phone}&password={$password}&code={$code}&iin={$iin}&company_name={$company_name}&company_type={$company_type}&address={$address}";
+        $http = Http::withoutVerifying()->get($url);
+        if ($http->status() == 200) {
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * @param $doc
+     * @param string $name
+     * @param int $userID
+     * @return JsonResponse
+     */
+    public function addDocs($doc, string $name, int $userID): JsonResponse
     {
         $fileName = sha1(Str::random(50)) . "." . $doc->extension();
         $doc->storeAs('uploads', $fileName, 'public');
@@ -66,7 +110,12 @@ class PartnerService
         return response()->success();
     }
 
-    public function sign(string $phone, string $password)
+    /**
+     * @param string $phone
+     * @param string $password
+     * @return JsonResponse
+     */
+    public function sign(string $phone, string $password): JsonResponse
     {
         $user = User::where('phone', $phone)->first();
         if (!Hash::check($password, $user->password)) {
@@ -78,8 +127,6 @@ class PartnerService
             3 => 'manager',
         ];
         $token = $user->createToken('api', [$user_types[$user->user_type]])->plainTextToken;
-
-
         $docs = [
             'token' => $token,
             'success' => true,
@@ -88,7 +135,11 @@ class PartnerService
         return response()->success($docs);
     }
 
-    public function getDocs(int $userID)
+    /**
+     * @param int $userID
+     * @return JsonResponse
+     */
+    public function getDocs(int $userID): JsonResponse
     {
         $doc = DB::table('documents')->where('user_id', $userID)->get()->toArray();
         if (!$doc) {
@@ -98,7 +149,11 @@ class PartnerService
         return response()->success($data);
     }
 
-    public function getActiveDocs(int $userID)
+    /**
+     * @param int $userID
+     * @return JsonResponse
+     */
+    public function getActiveDocs(int $userID): JsonResponse
     {
         $doc = DB::table('documents')->where('user_id', $userID)->where('status', 1)->get()->toArray();
         if (!$doc) {
@@ -114,7 +169,12 @@ class PartnerService
         return response()->success($data);
     }
 
-    public function payment(int $userID, string $amount)
+    /**
+     * @param int $userID
+     * @param string $amount
+     * @return JsonResponse
+     */
+    public function payment(int $userID, string $amount): JsonResponse
     {
         $success_url = 'api.mircreditov.kz';
         $description = 'Оплата за услугу';
@@ -125,7 +185,7 @@ class PartnerService
             'pg_salt' => "Salt", //amount of payment
             'pg_order_id' => $userID, //id of purchase, strictly unique
             'pg_description' => $description, //will be shown to client in process of payment, required
-            'pg_result_url' =>env('RESULT_URL'),//route('payment-result')
+            'pg_result_url' => env('RESULT_URL'),//route('payment-result')
             'pg_success_url' => $success_url,
         ];
         ksort($data);
@@ -140,7 +200,14 @@ class PartnerService
         return response()->success(['url' => env('PAYBOX_URL') . '?' . $query]);
     }
 
-    public function paymentResult(int $extra_user_id, float $pg_amount, string $transaction_id)
+    /**
+     * @param int $extra_user_id
+     * @param float $pg_amount
+     * @param string $transaction_id
+     * @return JsonResponse
+     */
+
+    public function paymentResult(int $extra_user_id, float $pg_amount, string $transaction_id): JsonResponse
     {
         $payment = Payment::where('transaction_id', $transaction_id)->first();
 
@@ -183,7 +250,15 @@ class PartnerService
         return response()->success();
     }
 
-    public function send(int $userID, string $phone, string $iin, int $smsID, int $documentID)
+    /**
+     * @param int $userID
+     * @param string $phone
+     * @param string $iin
+     * @param int $smsID
+     * @param int $documentID
+     * @return string
+     */
+    public function send(int $userID, string $phone, string $iin, int $smsID, int $documentID): string
     {
 
         $token = Str::random(16);
@@ -228,7 +303,7 @@ class PartnerService
         DB::table('balance_history')->insertGetId([
             'status' => 'expenditure',
             'amount' => 0,
-            'balance_before' => $before - 1,
+            'balance_before' => $before,
             'balance_after' => $before - 1,
             'description' => 'Отправка смс',
             'user_id' => $userID,

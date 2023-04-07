@@ -4,6 +4,7 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="{{asset('assets/css/app.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <meta name="csrf-token" content="{{csrf_token()}}">
 </head>
 <nav class="navbar navbar-expand-lg navbar-light bg-light m-10">
@@ -16,6 +17,9 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#rates">+77771112233</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#rates">Тарифы</a>
                 </li>
                 <li class="nav-item">
@@ -24,7 +28,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#howItWorks">Как это работает?</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" id="personal">
                     <a class="nav-link" id="personal">Личный кабинет</a>
                 </li>
             </ul>
@@ -33,7 +37,7 @@
 </nav>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
-
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script>
     const personal = document.getElementById('personal');
     personal.addEventListener("click",function (event){

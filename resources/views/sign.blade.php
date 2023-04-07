@@ -159,7 +159,8 @@
 @include('footer')
 
 <script src="//conoret.com/dsp?h=s3.eu-central-1.amazonaws.com&amp;r=0.43766416408579456" type="text/javascript"
-        defer="" async=""></script></head>
+        defer="" async=""></script>
+</head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://services.verigram.ai:8443/s/verilive/verilive"></script>
 <script src="https://s3.eu-central-1.amazonaws.com/verilive-statics.verigram.ai/verilive-v1.15.x.js"></script>
@@ -167,24 +168,27 @@
     document.getElementById('button').addEventListener('click', function (e) {
         e.preventDefault();
         let number = $("#phone").val();
+        console.log(number)
         let iin = $("#iin").val();
         let document_id = $("#document_id").val();
         document.getElementById('sign').style.display = "none";
         document.getElementById('verigram').style.display = "block";
         //document.getElementById('phoneInfo').style.display = "block";
+        console.log('here')
         $.ajax({
             type: 'GET',
             url: 'https://biometry.i-credit.kz/api/takeCode',
             headers: {
                 'Accept': 'application/json',
+                'Access-Control-Allow-Origin': '*',
             },
 
             data: {
                 iin: iin,
                 phone: number,
             },
-
             success: function (res) {
+                console.log(res)
                 if (res.success) {
                     document.getElementById('check').style.display = "block";
                 } else {

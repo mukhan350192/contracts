@@ -44,6 +44,7 @@
         },
         success: function (response,textStatus,jqXHR) {
             console.log(response)
+            console.log('test')
             console.log(jqXHR.status)
             if (response.success) {
                 let doc = document.getElementById('docs');

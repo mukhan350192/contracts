@@ -89,16 +89,11 @@
         console.log(docID)
         console.log(ii)
         $.ajax({
-            url: "{{ url('api/partner/send') }}",
+            url: "https://api.mircreditov.kz/api/partner/send?phone="+number+'&iin='+ii+'&document_id='+docID,
             type: "GET",
             headers: {
                 'Accept': 'application/json',
                 'Authorization': 'Bearer ' + token,
-            },
-            data: {
-                phone: number,
-                iin: ii,
-                document_id: docID,
             },
             success: function (response) {
                 console.log(response)

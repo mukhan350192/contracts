@@ -24,7 +24,7 @@
                     <label for="" class="title-small">ИИН клиента</label>
                     <input type="text" class="form-control" name="iin" id="iin">
                     <div class="d-flex justify-content-center text-center mt-3">
-                        <button type="submit" class="btn btn-primary">Отправить смс</button>
+                        <button type="button" class="btn btn-primary">Отправить смс</button>
                     </div>
                 </div>
 

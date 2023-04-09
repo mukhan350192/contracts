@@ -69,6 +69,9 @@
         error: function (xhr) {
             console.log(xhr)
             console.log(xhr.status)
+            document.getElementById('error').innerHTML = 'Кажется сессия токена истек. Вы будете перенаправлены на авторизацию личного кабинета';
+            setTimeout(()=>{console.log('here')},2000);
+            window.location.href='login';
         },
         complete: function () {
             loading.style.display = 'none'; // hide the loading animation

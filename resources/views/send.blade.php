@@ -90,7 +90,7 @@
         console.log(ii)
         $.ajax({
             url: "{{ url('api/partner/send') }}",
-            type: "POST",
+            type: "GET",
             headers: {
                 'Accept': 'application/json',
                 'Authorization': 'Bearer ' + token,

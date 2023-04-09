@@ -35,7 +35,7 @@ Route::middleware(['auth:sanctum', 'abilities:partner'])->group(function (): voi
         Route::get('getActiveDocs',[UserController::class,'getActiveDocs']);
         Route::get('getDocs',[UserController::class,'getDocs']);
 
-        Route::post('send',[UserController::class,'send']);
+        Route::get('send',[UserController::class,'send']);
     });
 });
 Route::any('infobip',[SMSController::class,'infobip'])->name('infobip');

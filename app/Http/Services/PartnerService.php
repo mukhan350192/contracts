@@ -283,7 +283,7 @@ class PartnerService
                 ],
             ],
         ];
-
+        var_dump($messages);
         $request = Http::withoutVerifying()
             ->baseUrl(env('BIPURL'))
             ->withHeaders([
@@ -291,7 +291,7 @@ class PartnerService
             ])->asJson()->post('/sms/2/text/advanced', [
                 'messages' => $messages,
             ]);
-
+        var_dump($request);
         $response = $request->json();
 
         $balance = DB::table('balance_history')->where('user_id', $userID)->orderByDesc('created_at')->first();

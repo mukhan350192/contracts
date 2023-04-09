@@ -10,7 +10,7 @@
             </div>
 
             <div id="loading" style="display: none;">Loading...</div>
-            <div class="form-control" action="api/partner/send" method="post" style="display: none;" id="send">
+            <div class="form-control"  style="display: none;" id="send">
                 <div class="form-outline">
                     <label class="title-small">Выбирайте договор</label>
                     <select id="select" class="form-control">

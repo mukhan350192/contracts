@@ -57,6 +57,11 @@
             } else {
                 document.getElementById('error').innerHTML = response.error;
             }
+            if (response.status == 401){
+                document.getElementById('error').innerHTML = 'Кажется сессия токена истек. Вы будете перенаправлены на авторизацию личного кабинета';
+                setTimeout(()=>{console.log('here')},2000);
+                window.location.href='login';
+            }
         },
         error: function (xhr) {
             // handle the error

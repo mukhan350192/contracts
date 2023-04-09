@@ -80,7 +80,7 @@
         }
     });
 
-    document.getElementById('send').addEventListener('submit', function (e) {
+    document.getElementById('send').addEventListener('click', function (e) {
         e.preventDefault();
         docID = $("#select").val();
         let number = $("#phone").val();

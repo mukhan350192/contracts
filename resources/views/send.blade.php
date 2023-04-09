@@ -10,7 +10,7 @@
             </div>
 
             <div id="loading" style="display: none;">Loading...</div>
-            <div class="form-control" action="api/partner/send" method="post" style="display: none;" id="send">
+            <div class="form-control" action="api/partner/send" method="post" style="display: none;">
                 <div class="form-outline">
                     <label class="title-small">Выбирайте договор</label>
                     <select id="select" class="form-control">
@@ -24,7 +24,7 @@
                     <label for="" class="title-small">ИИН клиента</label>
                     <input type="text" class="form-control" name="iin" id="iin">
                     <div class="d-flex justify-content-center text-center mt-3">
-                        <button type="button" class="btn btn-primary">Отправить смс</button>
+                        <button type="button" id="send" class="btn btn-primary">Отправить смс</button>
                     </div>
                 </div>
 

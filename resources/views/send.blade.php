@@ -6,9 +6,11 @@
         <div class="col-lg-6 mt-2">
             <div class="alert-danger" id="error">
             </div>
+            <div class="alert-success" id="success">
+            </div>
+
             <div id="loading" style="display: none;">Loading...</div>
-            <form class="form-control" action="api/partner/send" method="post" style="display: none;" id="send">
-                @csrf
+            <div class="form-control" action="api/partner/send" method="post" style="display: none;" id="send">
                 <div class="form-outline">
                     <label class="title-small">Выбирайте договор</label>
                     <select id="select" class="form-control">
@@ -26,7 +28,7 @@
                     </div>
                 </div>
 
-            </form>
+            </div>
         </div>
     </div>
 </div>
@@ -100,11 +102,11 @@
             },
             success: function (response) {
                 console.log(response)
-                /*if (response.success) {
-                  //  document.getElementById('success').style.display = "block";
+                if (response.success) {
+                    document.getElementById('success').innerHTML='СМС успешно отправлен';
                 } else {
-                  //  document.getElementById('fail').style.display = "none";
-                }*/
+                    document.getElementById('error').innerHTML = "Попробуйте позже";
+                }
             },
             error: function (xhr) {
                 console.log(xhr)

@@ -42,8 +42,9 @@
         headers: {
             'Authorization': 'Bearer ' + token,
         },
-        success: function (response) {
+        success: function (response,textStatus,jqXHR) {
             console.log(response)
+            console.log(jqXHR.status)
             if (response.success) {
                 let doc = document.getElementById('docs');
                 let select = $('#select');

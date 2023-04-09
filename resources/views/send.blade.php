@@ -36,6 +36,7 @@
     //  loading.style.display = 'block';
     token = localStorage.getItem('token');
     console.log(token)
+    console.log('test2')
     $.ajax({
         url: "{{ url('/api/partner/getActiveDocs') }}",
         type: "GET",

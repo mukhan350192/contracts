@@ -67,7 +67,8 @@
             }
         },
         error: function (xhr) {
-            // handle the error
+            console.log(xhr)
+            console.log(xhr.status)
         },
         complete: function () {
             loading.style.display = 'none'; // hide the loading animation

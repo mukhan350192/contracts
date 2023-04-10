@@ -35,6 +35,7 @@
             <form style="display: none;" id="verigram">
                 <button id="initButton" class="btn btn-primary">Пройти верификацию</button>
                 <div style="max-width: 500px; margin: 20px 0px 0px 0px;">
+                    <div id="id_veridoc"></div>
                     <div id="id_verilive"></div>
                 </div>
                 <div id="results">

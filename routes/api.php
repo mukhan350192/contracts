@@ -57,7 +57,7 @@ Route::middleware(['auth:sanctum','abilities:manager'])->group(function():void{
     });
 });
 //verigram
-Route::post('getAccessToken',[VerigramController::class,'getAccessToken']);
+Route::get('getAccessToken',[VerigramController::class,'getAccessToken']);
 Route::post('fields',[VerigramController::class,'fields']);
 Route::post('verilive',[VerigramController::class,'verilive']);
 Route::post('bmg',[VerigramController::class,'bmg']);

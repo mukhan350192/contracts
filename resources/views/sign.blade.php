@@ -273,7 +273,7 @@
 
 
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: 'https://api.mircreditov.kz/api/getAccessToken',
             headers: {
                 'Accept': 'application/json',

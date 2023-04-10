@@ -25,6 +25,7 @@
 
 
             <form style="display: none;" id="phoneInfo" class="form-group">
+                @csrf
                 <h1 class="title-small">На ваш номер отправился код подтверждение. Введите его для подписание
                     договоров</h1>
                 <input class="form-control" type="number" id="code"></input>

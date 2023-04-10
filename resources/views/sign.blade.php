@@ -37,6 +37,9 @@
                 <div style="max-width: 500px; margin: 20px 0px 0px 0px;">
                     <div id="id_verilive"></div>
                 </div>
+                <div id="results">
+
+                </div>
             </form>
 
             <div class="form-group" id="verilive" style="display: none;">
@@ -164,7 +167,10 @@
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://services.verigram.ai:8443/s/verilive/verilive"></script>
-<script src="https://s3.eu-central-1.amazonaws.com/verilive-statics.verigram.ai/verilive-v1.16.x.js"></script>
+{{--<script src="https://s3.eu-central-1.amazonaws.com/verilive-statics.verigram.ai/verilive-v1.15.x.js"></script>--}}
+<script src="https://s3.eu-central-1.amazonaws.com/verilive-statics.verigram.ai/verilive-v1.15.x.js"></script>
+
+<script src="https://s3.eu-central-1.amazonaws.com/veridoc-statics.verigram.ai/veridoc-v1.16.x.js"></script>
 <script>
     document.getElementById('button').addEventListener('click', function (e) {
         e.preventDefault();
@@ -176,7 +182,8 @@
         document.getElementById('verigram').style.display = "block";
         //document.getElementById('phoneInfo').style.display = "block";
         console.log('here')
-        $.ajax({
+        document.getElementById('verigram').style.display = "block";
+    /*    $.ajax({
             type: 'GET',
             url: 'https://biometry.i-credit.kz/api/takeCode',
             headers: {
@@ -199,7 +206,7 @@
             error: function (err) {
                 console.log(err)
             }
-        });
+        });*/
     });
 
     document.getElementById('check').addEventListener('click', function (e) {
@@ -281,8 +288,10 @@
 
             success: function (res) {
                 if (res.success) {
+                    console.log(res)
                     let accessToken = res.access_token;
                     let personID = res.person_id;
+                    console.log(accessToken)
                     start(accessToken, personID);
                 } else {
 

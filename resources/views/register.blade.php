@@ -4,9 +4,8 @@
         <div class="col-lg-3"></div>
         <div class="col-lg-6 mt-4">
 
-            <form action="api/partner/create" class="register" method="post" id="reg">
+            <div class="register" id="reg">
                 <h1 class="text-center">Регистрация</h1>
-                @csrf
                 <div class="form-outline mb-4 mt-5 text-center fs-3">
                     <label for="name" class="text-center fs-3"><strong>Имя</strong></label>
                     <input type="text" id="name"
@@ -82,11 +81,12 @@
                 </div>
 
 
-            </form>
-            <form action="api/partner/create" id="check" method="post" style="display: none;">
-                @csrf
+            </div>
+
+
+            <div id="check" style="display: none;">
                 <button type="submit" class="form-control mb-4 text-center fs-3 p-3 register">Подтвердить</button>
-            </form>
+            </div>
         </div>
     </div>
 </div>
@@ -104,11 +104,11 @@
             $("#company").show();
         }
     });
-    document.getElementById('reg').addEventListener('submit', function (e) {
+    document.getElementById('reg').addEventListener('click', function (e) {
         e.preventDefault();
         let number = $("#phone").val();
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: 'api/sendSMS',
             headers: {
                 'Accept': 'application/json',
@@ -136,7 +136,7 @@
     });
 
 
-    document.getElementById('check').addEventListener('submit', function (e) {
+    document.getElementById('check').addEventListener('click', function (e) {
         e.preventDefault();
 
         let number = $("#phone").val();
@@ -150,7 +150,7 @@
 
         console.log(iin);
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: 'api/partner/create',
             headers: {
                 'Accept': 'application/json',

@@ -104,18 +104,16 @@
             $("#company").show();
         }
     });
+
+
     document.getElementById('reg').addEventListener('click', function (e) {
         e.preventDefault();
         let number = $("#phone").val();
         $.ajax({
             type: 'GET',
-            url: 'api/sendSMS',
+            url: 'api/sendSMS?phone='+number,
             headers: {
                 'Accept': 'application/json',
-            },
-
-            data: {
-                phone: number,
             },
             success: function (res) {
                 if (res.success) {
@@ -151,22 +149,10 @@
         console.log(iin);
         $.ajax({
             type: 'GET',
-            url: 'api/partner/create',
+            url: 'api/partner/create?iin='+iin+'&phone='+number+'&name='+name+'&password='+password+'&company_type='+type+'&company_name='+company_name+'&address='+address+'&code='+code,
             headers: {
                 'Accept': 'application/json',
             },
-
-            data: {
-                iin: iin,
-                phone: number,
-                name: name,
-                password: password,
-                company_type: type,
-                company_name: company_name,
-                address: address,
-                code: code,
-            },
-
             success: function (res) {
 
                 if (res.success) {

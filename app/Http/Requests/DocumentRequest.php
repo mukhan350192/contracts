@@ -26,7 +26,7 @@ class DocumentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'doc' => 'required|file|mimes:docx,pdf',
+            'doc' => 'required|file|mimes:docx,pdf,doc',
             'name' => 'required|string'
         ];
     }

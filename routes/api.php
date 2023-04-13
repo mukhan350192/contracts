@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LawyerController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\SMSController;
 use App\Http\Controllers\UserController;
@@ -61,3 +62,8 @@ Route::get('getAccessToken',[VerigramController::class,'getAccessToken']);
 Route::post('fields',[VerigramController::class,'fields']);
 Route::post('verilive',[VerigramController::class,'verilive']);
 Route::post('bmg',[VerigramController::class,'bmg']);
+
+Route::prefix('lawyer')->group(function(){
+    Route::post('/create',[LawyerController::class,'create']);
+    Route::get('uncheckingDocs',[LawyerController::class,'uncheckingDocs']);
+});

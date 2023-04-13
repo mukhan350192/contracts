@@ -57,4 +57,17 @@ class User extends Authenticatable
         $token = $user->createToken('api', ['manager'])->plainTextToken;
         return response()->success(['token' => $token]);
     }
+
+    public static function addLawyer(string $name, string $phone, string $password): JsonResponse
+    {
+        $user = User::create([
+            'name' => $name,
+            'phone' => $phone,
+            'password' => bcrypt($password),
+            'user_type' => 4,
+
+        ]);
+        $token = $user->createToken('api', ['lawyer'])->plainTextToken;
+        return response()->success(['token' => $token]);
+    }
 }

@@ -224,20 +224,7 @@
         }
         console.log(birthDate)
 //Физ. лицо
-//Проверяем первый фасет на совпадение с датой рождения ГГММДД
-                if(iin.substring(0, 6)!=(
-                    "" +
-                    (birthDate.getYear()) +
-                    ((birthDate.getMonth()+1)<10?"0":"")+
-                    (birthDate.getMonth()+1)+
-                    (birthDate.getDate()<10?"0":"")+
-                    birthDate.getDate())) return false;
-//Проверяем пол и век рождения
-                var s = parseInt(iin.substring(6, 7));
-                if(((s%2)==1)!=sex) return false;
-                if(
-                    birthDate.getFullYear()<(1800+parseInt(s/2)*100)
-                    || birthDate.getFullYear()>(1900+parseInt(s/2)*100)) return false;
+//Проверяем первый фасет на совпадение с датой рождения ГГММД
 
 
 

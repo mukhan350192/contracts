@@ -88,4 +88,11 @@ class UserController extends Controller
     {
         return $service->create($request->phone,$request->password,$request->iin,$request->name);
     }
+
+    public function logout(){
+        $user = auth()->user();
+        $user->currentAccessToken()->delete();
+        return response()->success();
+
+    }
 }

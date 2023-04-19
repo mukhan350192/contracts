@@ -14,12 +14,18 @@
                     <li><a href="{{url('transactionHistory')}}">История транзакцией</a></li>
                     <li><a href="{{url('rates')}}">Тарифы</a></li>
                     <li><a href="{{url('payment')}}">Пополнить баланс</a></li>
+                    <li><a id="logout" href="#" onclick="logout()">Выйти</a></li>
 
             </li>
         </ul>
     </nav>
 </div>
 <script type="text/javascript">
+    function logout(){
+        localStorage.removeItem('token')
+        window.location.href='/';
+    }
+
     $('#body-row .collapse').collapse('hide');
 
     // Collapse/Expand icon

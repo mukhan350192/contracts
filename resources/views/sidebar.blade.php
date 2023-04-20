@@ -22,6 +22,22 @@
 </div>
 <script type="text/javascript">
     function logout(){
+        let token = localStorage.getItem('token')
+        console.log(token)
+        $.ajax({
+            type: 'GET',
+            url: 'api/partner/logout',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            success: function (res) {
+               console.log(res)
+            },
+            error: function (err) {
+                document.getElementById('error').style.display = "block";
+            }
+        });
         localStorage.removeItem('token')
         window.location.href='/';
     }

@@ -1,50 +1,65 @@
 @include('header')
 
-<div class="container py-lg-5 py-md-4">
-    <div class="row align-items-center">
-        <div class="col-lg-3"></div>
-        <div class="col-lg-6 mt-4">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 d-xs-none"></div>
 
-            <form id="login" action="api/partner/sign" class="register" method="post">
-                <h1 class="text-center">Авторизация</h1>
+        <div class="col-lg-4">
+            <form id="login" action="api/partner/sign" class="register col-md-12 mb-5 col-xs-9" method="post">
+                <h5 class="text-center">Авторизация</h5>
                 @csrf
 
-                <div class="form-outline mb-4 text-center fs-3">
+                <div class="form-outline col-md-12 mb-4 text-center fs-6">
                     <label for="phone"><strong>Телефон</strong></label>
-                    <input type="number" id="phone"
+                    <input type="text" id="phone"
                            class="form-control input-lg bg-light @error('phone') is-invalid @enderror"
                            name="phone"
-                           value="{{old('phone')}} required autofocus">
+                           required autofocus>
                     @error('phone')
                     <span class="invalid-feedback" role="alert"><strong>{{$message}}</strong></span>
                     @enderror
                 </div>
 
-                <div class="form-outline mb-4 text-center fs-3">
+                <div class="form-outline col-md-12 mb-4 text-center fs-6">
                     <label for="password"><strong>Пароль</strong></label>
                     <input type="password" id="password"
                            class="form-control input-lg bg-light @error('password') is-invalid @enderror"
-                           name="password" value="{{old('password')}} required autofocus">
+                           name="password" required autofocus>
                     @error('password')
                     <span class="invalid-feedback" role="alert"><strong>{{$message}}</strong></span>
                     @enderror
                 </div>
 
 
-                <button type="submit" class="form-control mb-4 text-center fs-3 p-3 register">Войти</button>
+                <button type="submit" class="form-control col-md-12 mb-4 text-center fs-6 p-3 register">Войти</button>
                 @if (Session::has('error'))
                     <div class="alert-danger">{{Session::get('error')}}</div>
                 @endif
                 <div id="error" class="alert-danger" style="display: none;">Неправильный логин или пароль</div>
             </form>
+
+        </div>
+
+        <div class="col-lg-4 d-xs-none"></div>
+
+
         </div>
     </div>
 </div>
 @include('footer')
+<script src="https://unpkg.com/imask"></script>
 <script type="text/javascript">
+    var myInputMask = IMask(document.getElementById('phone'), {
+        mask: '+{7}(000)000-00-00',
+        lazy: false,
+    });
+
     let login = document.getElementById('login');
     login.addEventListener('submit', function (e) {
         e.preventDefault();
+        let phone = document.getElementById('phone').value
+        phone = phone.replace(/[^a-zA-Z0-9]/g, '');
+        document.getElementById('phone').value=phone
         let xhr = new XMLHttpRequest();
         xhr.open('POST', this.action);
         xhr.onreadystatechange = function () {

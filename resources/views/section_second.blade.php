@@ -8,9 +8,9 @@
                     <div class="col-lg-4">
                         <img src="{{asset('assets/images/mobile.png')}}" alt="" class="img-fluid">
                     </div>
-                    <div class="col-lg-8 mt-lg-0 mt-5">
+                    <div class="col-lg-8 mt-lg-0 mt-5 col-xs-12">
                         <div class="fea-gd-vv row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="float-lt feature-gd color-orange">
                                     <div class="icon">
                                         <img src="{{asset('assets/images/folders.png')}}" class="img-fluid" alt="">
@@ -28,7 +28,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6 mt-md-0 mt-4">
+                            <div class="col-md-12 mt-md-0 mt-4 col-xs-12">
                                 <div class="float-mid feature-gd color-green">
                                     <div class="icon">
                                         <img src="{{asset('assets/images/agreement.png')}}" class="img-fluid" alt="">
@@ -44,7 +44,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6 mt-4 pt-md-2">
+                            <div class="col-md-12 mt-4 pt-md-2 col-xs-12">
                                 <div class="float-mid feature-gd color-blue">
                                     <div class="icon">
                                         <img src="{{asset('assets/images/sign.png')}}" class="img-fluid" alt="">
@@ -61,7 +61,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6 mt-4 pt-md-2">
+                            <div class="col-md-12 mt-4 pt-md-2 col-xs-12">
                                 <div class="float-mid feature-gd color-pink">
                                     <div class="icon">
                                         <img src="{{asset('assets/images/database.png')}}" class="img-fluid" alt="">

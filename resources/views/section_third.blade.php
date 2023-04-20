@@ -6,7 +6,7 @@
             <div class="col-lg-1">
 
             </div>
-            <div class="col-lg-3 col-md-6 grids-feature">
+            <div class="col-lg-3 col-md-12 col-xs-12 grids-feature">
                 <div class="area-box">
                     <img src="{{asset('assets/images/document.png')}}" alt="" class="img-fluid" width="96px" height="96px">
                     <h4>
@@ -21,7 +21,7 @@
 
             </div>
 
-            <div class="col-lg-3 col-md-6 grids-feature mt-md-0 mt-4">
+            <div class="col-lg-3 col-md-12 grids-feature mt-md-0 mt-4">
                 <div class="area-box box-active">
                     <img src="{{asset('assets/images/digital-signature.png')}}" alt="" class="img-fluid" width="96px" height="96px">
                     <h4>
@@ -35,7 +35,7 @@
 
             </div>
 
-            <div class="col-lg-3 col-md-6 grids-feature mt-lg-0 mt-4">
+            <div class="col-lg-3 col-md-12 grids-feature mt-lg-0 mt-4">
                 <div class="area-box">
                     <img src="{{asset('assets/images/work-in-progress.png')}}" alt="" class="img-fluid" width="96px" height="96px">
                     <h4>

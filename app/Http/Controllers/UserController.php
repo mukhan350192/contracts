@@ -91,7 +91,7 @@ class UserController extends Controller
 
     public function logout(){
         $user = auth()->user();
-        $user->currentAccessToken()->delete();
+        $s = $user->currentAccessToken()->delete();
         return response()->success();
 
     }

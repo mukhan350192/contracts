@@ -7,9 +7,6 @@
 .nav-item{
     margin-left: 50px;
 }
-#personal{
-    margin-left: 100px;
-}
 .icon-info p{
     font-size: 12px;
 }
@@ -182,12 +179,9 @@ b, strong {
 }
 .register button{
     background-color: #ef2221;
-    margin: 15px auto 20px;
+    /*margin: 15px auto 20px;*/
     border-radius: 7px;
-    padding: 17px;
-}
-#login{
-    margin-left: 150px;
+    /*padding: 17px;*/
 }
 
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";

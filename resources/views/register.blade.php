@@ -1,4 +1,5 @@
 @include('header')
+
 <div class="container py-lg-5 py-md-4">
     <div class="row align-items-center">
         <div class="col-lg-3"></div>
@@ -6,77 +7,147 @@
 
             <div class="register" id="reg">
                 <h5 class="text-center">Регистрация</h5>
-                <span class="invalid-feedback" role="alert" id="errorMessage" style="display: none;"></span>
-                <div class="form-outline mb-4 mt-5 text-center fs-3">
-                    <label for="name" class="text-center fs-6"><strong>Имя</strong></label>
-                    <input type="text" id="name"
-                           class="form-control input-lg bg-light @error('name') is-invalid @enderror" name="name"
-                           required autofocus>
-
-                </div>
 
                 <div class="form-outline mb-4 text-center fs-6">
-                    <label for="iin"><strong>ИИН</strong></label>
-                    <input type="number" id="iin"
-                           class="form-control input-lg bg-light"
-                           name="iin"
-                           value="{{old('iin')}} required autofocus">
-                </div>
-
-                <div class="form-outline mb-4 text-center fs-6">
-                    <label for="phone"><strong>Телефон</strong></label>
-                    <input type="number" id="phone"
-                           class="form-control phone input-lg bg-light @error('phone') is-invalid @enderror"
-                           name="phone"
-                           value="{{old('phone')}}" required autofocus placeholder="+7(000)000-00-00"
-                            data-rule-required="true" data-rule-minlength="10">
-
-                    @error('phone')
-                    <span class="invalid-feedback" role="alert"><strong>{{$message}}</strong></span>
-                    @enderror
-                </div>
-
-                <div class="form-outline mb-4 text-center fs-6">
-                    <label for="password"><strong>Пароль</strong></label>
-                    <input type="password" id="password"
-                           class="form-control input-lg bg-light @error('password') is-invalid @enderror"
-                           name="password" value="{{old('password')}} required autofocus">
-                    @error('password')
-                    <span class="invalid-feedback" role="alert"><strong>{{$message}}</strong></span>
-                    @enderror
-                </div>
-
-                <div class="form-outline mb-4 text-center fs-6">
-                    <label for="password"><strong>Выбирайте тип</strong></label>
-                    <select name="company_type" class="form-control input-lg bg-light" id="type">
-                        <option disabled>Выбирайте</option>
+                    <label for="password"><strong>Выбирайте тип пользовтеля</strong></label>
+                    <select name="company_type" class="form-control input-lg bg-light mt-3" id="type">
+                        <option value="0">Выбирайте</option>
                         <option value="1">Физ лицо</option>
                         <option value="2">ИП</option>
                         <option value="3">ТОО</option>
                         <option value="4">АО</option>
                     </select>
                 </div>
-                <div id="company_inline" style="display:none;">
-                </div>
-                <div id="company">
 
+                <div id="physical" style="display: none;">
+                    <div class="form-outline mb-4 mt-3 text-center fs-3">
+                        <label for="name" class="text-center fs-6"><strong>Имя</strong></label>
+                        <input type="text" id="name"
+                               class="form-control input-lg bg-light @error('name') is-invalid @enderror" name="name"
+                               required autofocus>
+                    </div>
 
                     <div class="form-outline mb-4 text-center fs-6">
-                        <label>Название компании или ИП</label>
+                        <label for="iin"><strong>ИИН</strong></label>
+                        <input type="number" id="iin"
+                               class="form-control input-lg bg-light"
+                               name="iin"
+                               value="{{old('iin')}} required autofocus">
+                    </div>
+
+                    <div class="form-outline mb-4 text-center fs-6">
+                        <label for="phone"><strong>Телефон</strong></label>
+                        <input type="text" id="phone"
+                               class="form-control phone input-lg bg-light @error('phone') is-invalid @enderror"
+                               name="phone"
+                               required autofocus placeholder="+7(000)000-00-00"
+                        >
+
+                        @error('phone')
+                        <span class="invalid-feedback" role="alert"><strong>{{$message}}</strong></span>
+                        @enderror
+                    </div>
+
+                    <div class="form-outline mb-4 text-center fs-6">
+                        <label for="password"><strong>Пароль</strong></label>
+                        <input type="password" id="password"
+                               class="form-control input-lg bg-light @error('password') is-invalid @enderror"
+                               name="password" required autofocus>
+                        @error('password')
+                        <span class="invalid-feedback" role="alert"><strong>{{$message}}</strong></span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div id="ip" style="display: none;">
+
+                    <div class="form-outline mb-4 text-center fs-6">
+                        <label for="iin"><strong>ИИН</strong></label>
+                        <input type="number" id="iin"
+                               class="form-control input-lg bg-light"
+                               name="iin"
+                               value="{{old('iin')}} required autofocus">
+                    </div>
+
+                    <div class="form-outline mb-4 text-center fs-6">
+                        <label>Название ИП</label>
                         <input id="company_name" type="text" name="company_name"
                                class="form-control input-lg bg-light">
                     </div>
-                    <div class="form-outline mb-4 text-center fs-6">
-                        <label>Адрес компании</label>
-                        <input id="address" type="text" name="address" class="form-control input-lg bg-light">
+
+                    <div class="form-outline mb-4 mt-3 text-center fs-3">
+                        <label for="name" class="text-center fs-6"><strong>Имя</strong></label>
+                        <input type="text" id="name"
+                               class="form-control input-lg bg-light @error('name') is-invalid @enderror" name="name"
+                               required autofocus>
                     </div>
 
+                    <div class="form-outline mb-4 text-center fs-6">
+                        <label for="phone"><strong>Телефон</strong></label>
+                        <input type="text" id="phone"
+                               class="form-control phone input-lg bg-light @error('phone') is-invalid @enderror"
+                               name="phone"
+                               required autofocus placeholder="+7(000)000-00-00"
+                        >
+                    </div>
+
+                    <div class="form-outline mb-4 text-center fs-6">
+                        <label for="password"><strong>Пароль</strong></label>
+                        <input type="password" id="password"
+                               class="form-control input-lg bg-light @error('password') is-invalid @enderror"
+                               name="password" required autofocus>
+                    </div>
+                </div>
+
+                <div id="company_inline" style="display:none;">
+                </div>
+                <div id="company">
+                    <div class="form-outline mb-4 text-center fs-6">
+                        <label for="BIN"><strong>БИН</strong></label>
+                        <input type="number" id="bin"
+                               class="form-control input-lg bg-light"
+                               name="bin" required autofocus>
+                    </div>
+
+                    <div class="form-outline mb-4 text-center fs-6">
+                        <label>Название компании</label>
+                        <input id="company_name" type="text" name="company_name"
+                               class="form-control input-lg bg-light">
+                    </div>
+
+                    <div class="form-outline mb-4 mt-3 text-center fs-3">
+                        <label for="name" class="text-center fs-6"><strong>Имя контактного лица</strong></label>
+                        <input type="text" id="name"
+                               class="form-control input-lg bg-light" name="name"
+                               required autofocus>
+                    </div>
+
+                    <div class="form-outline mb-4 text-center fs-6">
+                        <label for="phone"><strong>Телефон контактного лица</strong></label>
+                        <input type="text" id="phone"
+                               class="form-control phone input-lg bg-light"
+                               name="phone"
+                               required autofocus placeholder="+7(000)000-00-00"
+                        >
+
+                        @error('phone')
+                        <span class="invalid-feedback" role="alert"><strong>{{$message}}</strong></span>
+                        @enderror
+                    </div>
+
+                    <div class="form-outline mb-4 text-center fs-6">
+                        <label for="password"><strong>Пароль</strong></label>
+                        <input type="password" id="password"
+                               class="form-control input-lg bg-light"
+                               name="password" required autofocus>
+                    </div>
 
                 </div>
                 <div class="form-outline mb-4 text-center fs-6" id="code" style="display: none;">
                     <label for="password"><strong>Код подтверждение</strong></label>
                     <input type="number" class="form-control" id="codeNumber">
                 </div>
+                <span class="invalid-feedback" role="alert" id="errorMessage" style="display: none;"></span>
                 <div class="form-outline mb-4 text-center fs-6" id="button">
                     <button type="button" id="register" class="btn btn-danger text-center fs-6 p-3">Регистрация</button>
                 </div>
@@ -91,19 +162,50 @@
         </div>
     </div>
 </div>
+
 @include('footer')
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/4.0.9/jquery.inputmask.bundle.min.js"></script>
+<script src="https://unpkg.com/imask"></script>
+
 <script type="text/javascript">
+
+    var myInputMask = IMask(document.getElementById('phone'), {
+        mask: '+{7}(000)000-00-00',
+        lazy: false,
+    });
+
+    // Update the mask when the input value changes
+
 
     let company = document.getElementById("company");
     $("#type").change(function () {
         let select = $(this).val();
         company.style.display = "none";
-        if (select == 1) {
+        if (select == 0){
+            $("#physical").hide();
             $("#company").hide();
+            $("#ip").hide();
+            return
         }
-        if (select != 1) {
+        if (select == 1) {
+            $("#physical").show();
+            $("#company").hide();
+            $("#ip").hide();
+            return
+        }
+        if (select == 2) {
+            $("#ip").show();
+            $("#physical").hide();
+            $("#company").hide();
+            return
+        }
+        if (select == 3 || select == 4) {
+            $("#physical").hide();
             $("#company").show();
+            $("#ip").hide();
+            return
         }
     });
 

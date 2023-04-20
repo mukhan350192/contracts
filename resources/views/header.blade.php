@@ -7,40 +7,51 @@
 
     <meta name="csrf-token" content="{{csrf_token()}}">
 </head>
-<nav class="navbar navbar-expand-lg navbar-light bg-light m-10">
-    <div class="container-fluid m-4 fixed-top">
-        <a class="navbar-brand" id="main_menu" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse topnav" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#rates">+77771112233</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#rates">Тарифы</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#features">Преимущества</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#howItWorks">Как это работает?</a>
-                </li>
-                <li class="nav-item" id="personal">
-                    <a class="nav-link" id="personal">Личный кабинет</a>
-                </li>
+<div class="container-fluid">
+    <div class="row">
+{{--        <nav class="navbar navbar-expand-lg navbar-light bg-light m-10">--}}
+        <nav class="navbar navbar-expand-lg navbar-dark pt-10" style="background-color: #516BEB;">
+            <div class="container-fluid">
+                <a class="navbar-brand" id="main_menu" href="#">Navbar</a>
+                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" onclick="check()">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse topnav" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/#rates">+77771112233</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/#rates">Тарифы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/#features">Преимущества</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/#howItWorks">Как это работает?</a>
+                        </li>
+                        <li class="nav-item" id="personal">
+                            <a class="nav-link" id="personal">Личный кабинет</a>
+                        </li>
 
-            </ul>
-        </div>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </div>
-</nav>
+</div>
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js" integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
+
+    function check(){
+        console.log('here')
+    }
 
     const personal = document.getElementById('personal');
     personal.addEventListener("click",function (event){

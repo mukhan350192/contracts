@@ -11,7 +11,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property $password string
  * @property $company_name string
  * @property $company_type string
- * @property $address string
+ * @property $bin string
  * @property $code integer
  */
 class PartnerRequest extends FormRequest

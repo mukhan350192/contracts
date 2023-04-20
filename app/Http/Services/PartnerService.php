@@ -34,11 +34,15 @@ class PartnerService
         string      $password,
         string|null $company_name,
         string|null $company_type,
-        string|null $address,
+        string|null $bin,
         int         $code,
         string      $iin
     ): JsonResponse
     {
+        $user = User::where('phone', $phone)->first();
+        if ($user) {
+            return response()->fail('Пользователь уже зарегистрирован');
+        }
         $check = DB::table('sms_confirmation')->where('phone', $phone)->where('code', $code)->first();
         if (!$check) {
             return response()->fail('Код не совпадает');
@@ -54,14 +58,16 @@ class PartnerService
             return response()->fail('Попробуйте позже');
         }
         $token = $user->createToken('api', ['partner'])->plainTextToken;
-        DB::table('partner_contacts')->insert([
-            'company_name' => $company_name,
-            'company_type' => $company_type,
-            'address' => $address,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-        $this->sendToBitrix($name, $phone, $password, $code, $iin, $company_name, $company_type, $address);
+        if (!$company_type != 1) {
+            DB::table('partner_contacts')->insert([
+                'company_name' => $company_name,
+                'company_type' => $company_type,
+                'bin' => $bin,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+        }
+        $this->sendToBitrix($name, $phone, $password, $code, $iin, $company_name, $company_type, $bin);
         return response()->success(['token' => $token]);
     }
 
@@ -77,9 +83,9 @@ class PartnerService
      * @return bool
      */
 
-    public function sendToBitrix($name, $phone, $password, $code, $iin, $company_name, $company_type, $address)
+    public function sendToBitrix($name, $phone, $password, $code, $iin, $company_name, $company_type, $bin)
     {
-        $url = $this->url . "?name={$name}&phone={$phone}&password={$password}&code={$code}&iin={$iin}&company_name={$company_name}&company_type={$company_type}&address={$address}";
+        $url = $this->url . "?name={$name}&phone={$phone}&password={$password}&code={$code}&iin={$iin}&company_name={$company_name}&company_type={$company_type}&bin={$bin}";
         $http = Http::withoutVerifying()->get($url);
         if ($http->status() == 200) {
             return true;

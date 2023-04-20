@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('company_name',500)->nullable();
             $table->string('company_type',500)->nullable();
-            $table->string('address')->nullable();
+            $table->string('bin',12)->nullable();
             $table->timestamps();
         });
     }

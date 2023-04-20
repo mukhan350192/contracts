@@ -22,7 +22,9 @@ Route::get('/', function () {
 Route::get('/register',function (){
    return view('register');
 });
-
+Route::get('/remember_password',function (){
+    return view('remember_password');
+});
 Route::get('partner-page',function (){
    return view('partner-page');
 });

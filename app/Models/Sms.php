@@ -57,6 +57,7 @@ class Sms extends Model
             ]);
 
         $response = $request->json();
-        return response()->success();
+        return isset($response['messages'][0]['status']['groupId'])
+            && in_array($response['messages'][0]['status']['groupId'], [1, 3]);
     }
 }

@@ -52,9 +52,12 @@ class VerigramService
     public function fields($firstName,$gender,$iin,$lastName,$middleName,$originalImage,$facePicture,$shortID,$phone,$best_frame){
         $original = base64_decode($originalImage);
         $originalName = sha1(Str::random(50)).".jpeg";
-        $s = Storage::disk('local')->put('docs/'.$originalName, $original);
-        var_dump($s);
-        var_dump(Storage::disk()->getDriver()->getAdapter()->getClient()->getContainer()->getResponse()->getBody());
+        try{
+            Storage::disk('local')->put('docs/'.$originalName, $original);
+        }catch (\Exception $e){
+            print_r($e->getMessage());
+        }
+
         $face = base64_decode($facePicture);
         $faceName = sha1(Str::random(50)).".jpeg";
         Storage::disk('local')->put('docs/'.$faceName, $face);

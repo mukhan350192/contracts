@@ -36,7 +36,7 @@ class PartnerService
         string|null $company_type,
         string|null $bin,
         int         $code,
-        string      $iin
+        string|null      $iin
     ): JsonResponse
     {
         $user = User::where('phone', $phone)->first();

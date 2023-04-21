@@ -7,11 +7,11 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @property $name string
  * @property $phone string
- * @property $iin string
+ * @property $iin string|null
  * @property $password string
- * @property $company_name string
+ * @property $company_name string|null
  * @property $company_type string
- * @property $bin string
+ * @property $bin string|null
  * @property $code integer
  */
 class PartnerRequest extends FormRequest

@@ -524,9 +524,12 @@
                         success: function (response) {
                             console.log(response)
                         }
+                        error: function (response){
+                            console.log(response)
+                        }
                     });
-                    verilive.dispose();
-                    window.location.href=''
+                    //verilive.dispose();
+                    //window.location.href=''
                 };
                 return null;
             })

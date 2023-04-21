@@ -235,13 +235,13 @@
         let company_name = $("#ip_company_name").val();
         let c_company_name = $("#c_company_name").val();
         let bin = $("#bin").val();
-        if (type == 1){
+        if (type == 1) {
             phone = phone.replace(/[^a-zA-Z0-9]/g, '');
         }
-        if (type == 2){
+        if (type == 2) {
             ip_phone = ip_phone.replace(/[^a-zA-Z0-9]/g, '');
         }
-        if (type == 3){
+        if (type == 3) {
             c_phone = c_phone.replace(/[^a-zA-Z0-9]/g, '');
         }
         console.log(type)
@@ -263,10 +263,10 @@
             }
         }
         console.log('test2');
-        if (type == 3) {
-            url = '&name=' + c_name + '&iin=' + c_iin + '&phone=' + c_phone + '&password=' + c_password + '&company_name=' + c_company_name + '&bin=' + bin;
+        if (type == 3 || type==4) {
+            url = 'phone=' + c_phone + '&password=' + c_password + '&company_name=' + c_company_name + '&bin=' + bin;
             number = c_phone
-            if (!validate_company(c_name, c_phone, c_password, c_company_name, bin)) {
+            if (!validate_company(c_phone, c_password, c_company_name, bin)) {
                 return;
             }
         }
@@ -316,39 +316,39 @@
         let c_company_name = $("#c_company_name").val();
         let bin = $("#bin").val();
         let code = $("#codeNumber").val();
-        if (type == 1){
+        if (type == 1) {
             phone = phone.replace(/[^a-zA-Z0-9]/g, '');
         }
-        if (type == 2){
+        if (type == 2) {
             ip_phone = ip_phone.replace(/[^a-zA-Z0-9]/g, '');
         }
-        if (type == 3){
+        if (type == 3) {
             c_phone = c_phone.replace(/[^a-zA-Z0-9]/g, '');
         }
         let url = '';
         if (type == 1) {
-            url = 'name=' + name + '&iin=' + iin + '&phone=' + phone + '&password=' + client_password+'&code='+code;
+            url = 'name=' + name + '&iin=' + iin + '&phone=' + phone + '&password=' + client_password + '&code=' + code;
             console.log(phone)
             if (!validate(name, iin, phone, client_password)) {
                 return
             }
         }
         if (type == 2) {
-            url = 'name=' + ip_name + '&iin=' + ip_iin + '&phone=' + ip_phone + '&password=' + ip_password + '&company_name=' + company_name+'&code='+code;
+            url = 'name=' + ip_name + '&iin=' + ip_iin + '&phone=' + ip_phone + '&password=' + ip_password + '&company_name=' + company_name + '&code=' + code;
             if (!validate_ip(ip_name, ip_iin, ip_phone, ip_password, company_name)) {
                 return;
             }
         }
-        if (type == 3) {
-            url = 'name=' + c_name + '&iin=' + c_iin + '&phone=' + c_phone + '&password=' + c_password + '&company_name=' + c_company_name + '&bin=' + bin+'&code='+code;
-            if (!validate_company(c_name, c_phone, c_password, c_company_name, bin)) {
+        if (type == 3 || type==4) {
+            url = 'name=' + c_name + '&phone=' + c_phone + '&password=' + c_password + '&company_name=' + c_company_name + '&bin=' + bin + '&code=' + code;
+            if (!validate_company(c_phone, c_password, c_company_name, bin)) {
                 return;
             }
         }
-
+        document.getElementById('errorMessage').innerHTML = ''
         $.ajax({
             type: 'GET',
-            url: 'api/partner/create?'+url,
+            url: 'api/partner/create?' + url,
             headers: {
                 'Accept': 'application/json',
             },
@@ -432,12 +432,7 @@
         return true
     }
 
-    function validate_company() {
-        if (!name) {
-            document.getElementById('errorMessage').style.display = 'block'
-            document.getElementById('errorMessage').innerHTML = 'Введите имя'
-            return false
-        }
+    function validate_company(phone, password, company_name, bin) {
         if (!phone || phone.length != 11) {
             document.getElementById('errorMessage').style.display = 'block'
             document.getElementById('errorMessage').innerHTML = 'Введите корректный телефон'

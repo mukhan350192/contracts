@@ -311,7 +311,7 @@
 
         "render": {
             "oval": true,
-            "ovalType": contour,
+            "ovalType": '',
             "ovalRingColor": {
                 "default": "#F5F542",
                 "actionSuccess": "#00F500",

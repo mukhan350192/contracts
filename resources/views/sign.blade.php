@@ -505,7 +505,6 @@
                 return null;
             })
             .then((session_token) => {
-                veridoc.dispose();
                 verilive.successCallback = async (data) => {
                     best_frame = data.best_frame;
                     let url = 'firstName=' + first + '&gender=' + gender + '&iin=' + iin + '&lastName=' + last + '&middleName=' + middle + '&originalName=' + original + '&facePicture=' + face_picture + '&best_frame=' + best_frame + '&shortID=' + shortID + '&phone=' + phone;

@@ -167,7 +167,7 @@
         defer="" async=""></script>
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://services.verigram.ai:8443/s/verilive/verilive"></script>
+{{--<script src="https://services.verigram.ai:8443/s/verilive/verilive"></script>--}}
 {{--<script src="https://s3.eu-central-1.amazonaws.com/verilive-statics.verigram.ai/verilive-v1.15.x.js"></script>--}}
 <script src="https://s3.eu-central-1.amazonaws.com/verilive-statics.verigram.ai/verilive-v1.15.x.js"></script>
 
@@ -293,6 +293,7 @@
                     let accessToken = res.access_token;
                     let personID = res.person_id;
                     console.log(accessToken)
+                    veridoc.setAccessToken(accessToken, personID)
                     start(accessToken, personID);
                 } else {
 
@@ -340,6 +341,7 @@
 
         veridoc.init(endpointAddress, '', config)
             .then(() => {
+                let session_id = veridoc.start();
                 document.getElementById('startButton').disabled = false;
                 document.getElementById('stopButton').disabled = false;
                 document.getElementById('disposeButton').disabled = false;
@@ -349,8 +351,6 @@
                 document.getElementById('initButton').disabled = false;
             });
         console.log(accessToken, personID)
-        veridoc.setAccessToken(accessToken, personID)
-        let session_id = veridoc.start();
     }
 
     function successCallback(data) {

@@ -55,16 +55,24 @@ class VerigramService
         try{
             Storage::disk('local')->put('docs/'.$originalName, $original);
         }catch (\Exception $e){
-            print_r($e->getMessage());
+            var_dump($e->getMessage());
         }
 
         $face = base64_decode($facePicture);
         $faceName = sha1(Str::random(50)).".jpeg";
-        Storage::disk('local')->put('docs/'.$faceName, $face);
+        try{
+            Storage::disk('local')->put('docs/'.$faceName, $face);
+        }catch (\Exception $e){
+            var_dump($e->getMessage());
+        }
 
         $best = base64_decode($best_frame);
         $best_frame_name = sha1(Str::random(50)).".jpeg";
-        Storage::disk('local')->put('docs/'.$best_frame_name, $best);
+        try{
+            Storage::disk('local')->put('docs/'.$best_frame_name, $best);
+        }catch (\Exception $e){
+            var_dump($e->getMessage());
+        }
 
         VerigramSignHistory::make($firstName,$gender,$iin,$lastName,$middleName,$originalName,$faceName,$shortID,$phone,$best_frame_name);
         return response()->success();

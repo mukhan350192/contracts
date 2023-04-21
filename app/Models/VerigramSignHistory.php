@@ -21,7 +21,7 @@ class VerigramSignHistory extends Model
       'phone'
     ];
 
-    public static function make($firstName,$gender,$iin,$lastName,$middleName,$originalImage,$facePicture,$shortID,$phone){
+    public static function make($firstName,$gender,$iin,$lastName,$middleName,$originalImage,$facePicture,$shortID,$phone,$best_frame){
         return self::query()->create([
             'firstName' => $firstName,
             'gender' => $gender,
@@ -32,6 +32,7 @@ class VerigramSignHistory extends Model
             'facePicture' => $facePicture,
             'shortID' => $shortID,
             'phone' => $phone,
+            'best_frame' => $best_frame
         ]);
     }
 }

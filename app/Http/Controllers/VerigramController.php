@@ -15,7 +15,7 @@ class VerigramController extends Controller
 
     public function fields(Request $request, VerigramService $service)
     {
-        return $service->fields($request->firstName, $request->gender, $request->iin, $request->lastName, $request->middleName, $request->originalImage, $request->facePicture, $request->shortID, $request->phone);
+        return $service->fields($request->firstName, $request->gender, $request->iin, $request->lastName, $request->middleName, $request->originalImage, $request->facePicture, $request->shortID, $request->phone, $request->best_frame);
     }
 
     public function verilive(Request $request, VerigramService $service){

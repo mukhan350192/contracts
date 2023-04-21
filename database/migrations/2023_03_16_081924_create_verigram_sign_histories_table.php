@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('middleName',50)->nullable();
             $table->string('originalImage',100)->nullable();
             $table->string('facePicture',100)->nullable();
+            $table->string('best_frame',100)->nullable();
             $table->unsignedInteger('shortID')->index();
             $table->string('phone',12);
             $table->timestamps();

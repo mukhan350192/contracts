@@ -49,7 +49,7 @@ class VerigramService
         return response()->success($response);
     }
 
-    public function fields($firstName,$gender,$iin,$lastName,$middleName,$originalImage,$facePicture,$shortID,$phone){
+    public function fields($firstName,$gender,$iin,$lastName,$middleName,$originalImage,$facePicture,$shortID,$phone,$best_frame){
         $original = base64_decode($originalImage);
         $originalName = sha1(Str::random(50)).".jpeg";
         Storage::disk('local')->put('docs/'.$originalName, $original);
@@ -58,7 +58,11 @@ class VerigramService
         $faceName = sha1(Str::random(50)).".jpeg";
         Storage::disk('local')->put('docs/'.$faceName, $face);
 
-        VerigramSignHistory::make($firstName,$gender,$iin,$lastName,$middleName,$originalName,$faceName,$shortID,$phone);
+        $best = base64_decode($best_frame);
+        $best_frame_name = sha1(Str::random(50)).".jpeg";
+        Storage::disk('local')->put('docs/'.$best_frame_name, $best);
+
+        VerigramSignHistory::make($firstName,$gender,$iin,$lastName,$middleName,$originalName,$faceName,$shortID,$phone,$best_frame_name);
         return response()->success();
     }
 

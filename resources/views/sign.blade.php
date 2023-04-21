@@ -172,6 +172,8 @@
 <script src="https://s3.eu-central-1.amazonaws.com/verilive-statics.verigram.ai/verilive-v1.15.x.js"></script>
 
 <script src="https://s3.eu-central-1.amazonaws.com/veridoc-statics.verigram.ai/veridoc-v1.16.x.js"></script>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
     document.getElementById('button').addEventListener('click', function (e) {
         e.preventDefault();
@@ -184,30 +186,30 @@
         //document.getElementById('phoneInfo').style.display = "block";
         console.log('here')
         document.getElementById('verigram').style.display = "block";
-    /*    $.ajax({
-            type: 'GET',
-            url: 'https://biometry.i-credit.kz/api/takeCode',
-            headers: {
-                'Accept': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-            },
+        /*    $.ajax({
+                type: 'GET',
+                url: 'https://biometry.i-credit.kz/api/takeCode',
+                headers: {
+                    'Accept': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                },
 
-            data: {
-                iin: iin,
-                phone: number,
-            },
-            success: function (res) {
-                console.log(res)
-                if (res.success) {
-                    document.getElementById('check').style.display = "block";
-                } else {
-                    document.getElementById('verigram').style.display = "block";
+                data: {
+                    iin: iin,
+                    phone: number,
+                },
+                success: function (res) {
+                    console.log(res)
+                    if (res.success) {
+                        document.getElementById('check').style.display = "block";
+                    } else {
+                        document.getElementById('verigram').style.display = "block";
+                    }
+                },
+                error: function (err) {
+                    console.log(err)
                 }
-            },
-            error: function (err) {
-                console.log(err)
-            }
-        });*/
+            });*/
     });
 
     document.getElementById('check').addEventListener('click', function (e) {
@@ -258,10 +260,10 @@
                             document_id: documentID,
                             image: image,
                         },
-                        success: function (res){
+                        success: function (res) {
                             window.location.href = "https://api.mircreditov.kz/"
                         },
-                        error: function (){
+                        error: function () {
                             window.location.href = "https://api.mircreditov.kz/"
                         }
                     });
@@ -275,236 +277,101 @@
         });
     });
 
+    let accessToken = null;
+    let personID = null;
+    var documentType = 1;
+    var recognitionMode = 0;
+    var language = 'ru';
+    var customTranslations = JSON.parse(document.getElementById('customTranslations').value);
+    var isGlareCheckNeeded = false;
+    var isPhotocopyCheckNeeded = false;
+    var isTranslitCheckNeeded = false;
+    var isAutoDocTypeMode = false;
+    var isImageOnlyMode = false;
+    var renderProperties = JSON.parse(document.getElementById('renderProperties').value);
+
+    const config = {
+        autoDocType: isAutoDocTypeMode,
+        docType: documentType,
+        recognitionMode: recognitionMode,
+        imageOnlyMode: isImageOnlyMode,
+        translitCheck: isTranslitCheckNeeded,
+        glareCheck: isGlareCheckNeeded,
+        photocopyCheck: isPhotocopyCheckNeeded,
+        lang: language,
+        render: renderProperties,
+        hints: customTranslations
+    }
+
     document.getElementById('initButton').addEventListener('click', function (e) {
-
         e.preventDefault();
-
-
-        $.ajax({
-            type: 'GET',
-            url: 'https://api.mircreditov.kz/api/getAccessToken',
-            headers: {
-                'Accept': 'application/json',
-            },
-
-            success: function (res) {
-                if (res.success) {
-                    console.log(res)
-                    let accessToken = res.access_token;
-                    let personID = res.person_id;
-                    console.log(accessToken)
-                    veridoc.setAccessToken(accessToken, personID)
-                    let session_id = veridoc.start();
-                    start(accessToken, personID);
-                } else {
-
-                }
-                console.log(res)
-            },
-
-
-        });
-    });
-
-
-    function start(accessToken, personID) {
-        var endpointAddress = 'https://services.verigram.ai:8443/s/veridoc/ru/veridoc/';
-        var documentType = 1;
-        var recognitionMode = 0;
-        var language = 'ru';
-        var customTranslations = JSON.parse(document.getElementById('customTranslations').value);
-        var isGlareCheckNeeded = false;
-        var isPhotocopyCheckNeeded = false;
-        var isTranslitCheckNeeded = false;
-        var isAutoDocTypeMode = false;
-        var isImageOnlyMode = false;
-        var renderProperties = JSON.parse(document.getElementById('renderProperties').value);
-
-        document.getElementById('initButton').disabled = true;
-
-        const config = {
-            autoDocType: isAutoDocTypeMode,
-            docType: documentType,
-            recognitionMode: recognitionMode,
-            imageOnlyMode: isImageOnlyMode,
-            translitCheck: isTranslitCheckNeeded,
-            glareCheck: isGlareCheckNeeded,
-            photocopyCheck: isPhotocopyCheckNeeded,
-            lang: language,
-            render: renderProperties,
-            hints: customTranslations
-        }
-
-        veridoc.successCallback = successCallback;
-        veridoc.failCallback = failCallback;
-        veridoc.errorCallback = errorCallback;
-        veridoc.updateCallback = updateCallback;
-
-        veridoc.init(endpointAddress, '', config)
-            .then(() => {
-
-                document.getElementById('startButton').disabled = false;
-                document.getElementById('stopButton').disabled = false;
-                document.getElementById('disposeButton').disabled = false;
+        let shortID = document.getElementById('document_id').value;
+        let phone = document.getElementById('phone').value;
+        let face_picture = '';
+        let first = '';
+        let gender = '';
+        let iin = '';
+        let middle = '';
+        let last = '';
+        let original = '';
+        let best_frame = '';
+        axios
+            .get('https://api.mircreditov.kz/api/getAccessToken')
+            .then((response) => {
+                accessToken = response.data.access_token;
+                personID = response.data.person_id;
+                veridoc.setAccessToken(accessToken, personID);
+                return veridoc.init(
+                    'https://services.verigram.ai:8443/s/veridoc/ru/veridoc/',
+                    '',
+                    config
+                );
             })
-            .catch((e) => {
-                document.getElementById('results').innerHTML = JSON.stringify(e);
-                document.getElementById('initButton').disabled = false;
-            });
-        console.log(accessToken, personID)
-    }
-
-    function successCallback(data) {
-        console.log('Session token is: ' + veridoc.getSessionToken());
-        console.log('success', data);
-        let firstName = data.first_name;
-        let gender = data.gender;
-        let iin = data.iin;
-        let lastName = data.last_name;
-        let middleName = data.middle_name;
-        let originalImage = data.original_image;
-        let facePicture = data.face_picture;
-        let shortID = $("#document_id").val();
-        let number = $("#phone").val();
-        $.ajax({
-            url: "https://api.mircreditov.kz/api/fields",
-            type: "POST",
-            data: {
-                firstName: firstName,
-                gender: gender,
-                iin: iin,
-                lastName: lastName,
-                middleName: middleName,
-                originalImage: originalImage,
-                facePicture: facePicture,
-                shortID: shortID,
-                phone: number,
-            },
-            success: function (response) {
-                console.log(response)
-            }
-        });
-    }
-
-    function showResults(data) {
-        var allResults = "";
-        const all = [];
-        document.getElementById('array').innerHTML = data;
-        for (var prop in data) {
-            if (data.hasOwnProperty(prop) && typeof data[prop] === 'string' || data[prop] instanceof String) {
-                var propValue = data[prop].replace(/</g, "&lt;");
-                all[prop] = propValue.substring(0, 20);
-                if (prop.includes('picture') || prop.includes('personal_signature') ||
-                    prop.includes('image')) {
-                    // allResults += prop + ': ' + propValue.substring(0, 20) + '... </br>';
-                    // all[prop] = propValue.substring(0,20);
-                    document.getElementById("array").innerHTML = "prop:" + prop + ":value" + propValue.substring(0, 20);
-                } else {
-                    allResults += prop + ': ' + propValue + ' </br>';
-                }
-            }
-        }
-
-        document.getElementById("results").innerHTML = allResults;
-
-    }
-
-    function failCallback(data) {
-        console.log('fail', data);
-        showResults(data);
-    }
-
-    function errorCallback(data) {
-        console.log('error', data);
-        showResults(data);
-    }
-
-    function updateCallback(data) {
-        console.log('update', data);
-        showResults(data);
-    }
-
-
-    async function runVerilive() {
-        let url = 'https://services.verigram.ai:8443/s/verilive/verilive';
-        let config = JSON.parse(document.getElementById('config_textarea').value);
-
-        verilive.successCallback = successVeriliveCallback;
-        verilive.failCallback = failVeriliveCallback;
-        verilive.errorCallback = errorVeriliveCallback;
-        verilive.updateCallback = updateVeriliveCallback;
-        verilive.waitScreenStartedCallback = waitScreenStartedCallback;
-        verilive.videoRecordingNotSupportedCallback = videoRecordingNotSupportedCallback;
-        verilive.videoReadyCallback = videoReadyCallback;
-        verilive.videoSentCallback = videoSentCallback;
-        verilive.videoSendProgressCallback = videoSendProgressCallback;
-        verilive.videoSendErrorCallback = videoSendErrorCallback;
-
-        verilive.init(url, '', config)
             .then(() => {
-                document.getElementById('info_browser').innerHTML = verilive.browser.name + " v" + verilive.browser.version
+                let session_id = veridoc.start();
+                veridoc.successCallback = (data) => {
+                    face_picture = data.face_picture;
+                    first = data.first_name;
+                    gender = data.gender;
+                    iin = data.iin;
+                    middle = data.middle_name;
+                    last = data.last_name;
+                    original = data.original_image;
+                    verilive.init(
+                        'https://services.verigram.ai:8443/s/verilive/verilive',
+                        '',
+                        config_verilive
+                    );
+                    return verilive.start(accessToken, personID);
+                };
+                return null;
             })
-            .catch((error) => {
-                document.getElementById("results").innerHTML = error;
-                document.getElementById('info_browser').innerHTML = verilive.browser.name + " v" + verilive.browser.version
-            });
-    }
-
-    function successVeriliveCallback(data) {
-        // E.g. Show results to user
-        let image = data.bestframe;
-        $.ajax({
-            url: "https://api.mircreditov.kz/api/verilive",
-            type: "POST",
-            data: {
-                image: image,
-            },
-            success: function (response) {
-                window.location.href = 'https://api.mircreditov.kz/'
-            }
-        });
-    }
-
-    // Failure VeriLive json results
-    function failVeriliveCallback(data) {
-        // E.g. Show to user, say to retry again
-        // document.getElementById("results").innerHTML = JSON.stringify(data, undefined, 2).replace(/</g, "&lt;");
-    }
-
-    function errorVeriliveCallback(data) {
-        // E.g. Show to user, say to retry again
-        // document.getElementById("results").innerHTML = JSON.stringify(data, undefined, 2).replace(/</g, "&lt;");
-    }
-
-    function updateVeriliveCallback(data) {
-        // console.log(data);
-    }
-
-    function videoRecordingNotSupportedCallback() {
-        console.log("video recording is not supported on this browser/device");
-    }
-
-    function waitScreenStartedCallback() {
-        console.log("waitScreenStartedCallback called");
-    }
-
-    function videoReadyCallback(blob, session_id) {
-        console.log(`Video is ready` + session_id);
-    }
-
-    function videoSendProgressCallback(event, session_id) {
-        // console.log("Downloaded " + event.loaded + "bytes of " + event.total + " of session " + session_id);
-    }
-
-    function videoSendErrorCallback(session_id) {
-        console.log('videoSendErrorCallback ' + session_id);
-    }
-
-    function videoSentCallback(session_id) {
-        console.log(`Video is sent` + session_id)
-    }
-
-    function onInitButtonClick() {
-        runVerilive();
-    }
+            .then((session_token) => {
+                verilive.successCallback = async (data) => {
+                    best_frame = data.best_frame;
+                    $.ajax({
+                        url: "https://api.mircreditov.kz/api/fields",
+                        type: "POST",
+                        data: {
+                            firstName: first,
+                            gender: gender,
+                            iin: iin,
+                            lastName: last,
+                            middleName: middle,
+                            originalImage: original,
+                            facePicture: face_picture,
+                            best_frame: best_frame,
+                            shortID: shortID,
+                            phone: phone,
+                        },
+                        success: function (response) {
+                            console.log(response)
+                        }
+                    });
+                    verilive.dispose();
+                    window.location.href=''
+                };
+                return null;
+            })
+    })
 </script>

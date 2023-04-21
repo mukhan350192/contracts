@@ -53,7 +53,8 @@ class VerigramService
         $original = base64_decode($originalImage);
         $originalName = sha1(Str::random(50)).".jpeg";
         try{
-            Storage::disk('local')->put('docs/'.$originalName, $original);
+            $s = Storage::disk('local')->put('docs/'.$originalName, $original);
+            var_dump($s);
         }catch (\Exception $e){
             var_dump($e->getMessage());
         }

@@ -41,54 +41,43 @@ class VerigramService
             CURLOPT_HTTPHEADER => $headers,
             CURLOPT_URL => $url,
         );
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt_array($ch, $options);
 
         $response = curl_exec($ch);
-        $response = json_decode($response,true);
+        $response = json_decode($response, true);
         return response()->success($response);
     }
 
-    public function fields($firstName,$gender,$iin,$lastName,$middleName,$originalImage,$facePicture,$shortID,$phone,$best_frame){
+    public function fields($firstName, $gender, $iin, $lastName, $middleName, $originalImage, $facePicture, $shortID, $phone, $best_frame)
+    {
         $original = base64_decode($originalImage);
-        $originalName = sha1(Str::random(50)).".jpeg";
-        try{
-            $s = Storage::disk('local')->put('docs/'.$originalName, $original);
-            var_dump($s);
-        }catch (\Exception $e){
-            var_dump($e->getMessage());
-        }
+        $originalName = sha1(Str::random(50)) . ".jpeg";
+        Storage::disk('local')->put('docs/' . $originalName, $original);
 
         $face = base64_decode($facePicture);
-        $faceName = sha1(Str::random(50)).".jpeg";
-        try{
-            Storage::disk('local')->put('docs/'.$faceName, $face);
-        }catch (\Exception $e){
-            var_dump($e->getMessage());
-        }
+        $faceName = sha1(Str::random(50)) . ".jpeg";
+        Storage::disk('local')->put('docs/' . $faceName, $face);
 
         $best = base64_decode($best_frame);
-        $best_frame_name = sha1(Str::random(50)).".jpeg";
-        try{
-            Storage::disk('local')->put('docs/'.$best_frame_name, $best);
-        }catch (\Exception $e){
-            var_dump($e->getMessage());
-        }
+        $best_frame_name = sha1(Str::random(50)) . ".jpeg";
+        Storage::disk('local')->put('docs/' . $best_frame_name, $best);
 
-        VerigramSignHistory::make($firstName,$gender,$iin,$lastName,$middleName,$originalName,$faceName,$shortID,$phone,$best_frame_name);
+        VerigramSignHistory::make($firstName, $gender, $iin, $lastName, $middleName, $originalName, $faceName, $shortID, $phone, $best_frame_name);
         return response()->success();
     }
 
-    public function verilive(int $document_id,$image){
+    public function verilive(int $document_id, $image)
+    {
         $image = base64_decode($image);
-        $imageName = sha1(Str::random(50)).".jpeg";
-        Storage::disk('local')->put('docs/'.$imageName,$image);
+        $imageName = sha1(Str::random(50)) . ".jpeg";
+        Storage::disk('local')->put('docs/' . $imageName, $image);
 
         DB::table('verilive')->insertGetId([
-           'image' => $imageName,
-           'document_id' => $document_id,
-           'created_at' => Carbon::now(),
-           'updated_at' => Carbon::now(),
+            'image' => $imageName,
+            'document_id' => $document_id,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
         return response()->success();
     }
@@ -99,15 +88,16 @@ class VerigramService
         string $name,
         string $lastName,
         string $middleName,
-        int $document_id,
+        int    $document_id,
         string $image
-    ){
+    )
+    {
         $image = base64_decode($image);
-        $imageName = sha1(Str::random(50)).".jpeg";
-        Storage::disk('local')->put('docs/'.$imageName,$image);
+        $imageName = sha1(Str::random(50)) . ".jpeg";
+        Storage::disk('local')->put('docs/' . $imageName, $image);
         DB::table('bmg')->insertGetId([
             'iin' => $iin,
-            'phone'=> $phone,
+            'phone' => $phone,
             'name' => $name,
             'lastName' => $lastName,
             'middleName' => $middleName,

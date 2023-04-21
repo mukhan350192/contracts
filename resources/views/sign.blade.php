@@ -294,6 +294,7 @@
                     let personID = res.person_id;
                     console.log(accessToken)
                     veridoc.setAccessToken(accessToken, personID)
+                    let session_id = veridoc.start();
                     start(accessToken, personID);
                 } else {
 
@@ -341,7 +342,7 @@
 
         veridoc.init(endpointAddress, '', config)
             .then(() => {
-                let session_id = veridoc.start();
+
                 document.getElementById('startButton').disabled = false;
                 document.getElementById('stopButton').disabled = false;
                 document.getElementById('disposeButton').disabled = false;

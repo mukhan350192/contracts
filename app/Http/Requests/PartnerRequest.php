@@ -36,7 +36,6 @@ class PartnerRequest extends FormRequest
             'phone' => 'required|string',
             'password' => 'required|string|min:6',
             'code' => 'required|integer',
-            'iin' => 'required|string'
         ];
     }
 }

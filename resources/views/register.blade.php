@@ -362,7 +362,6 @@
             },
             error: function (err) {
                 console.log(err)
-                console.log(data)
             }
 
         });

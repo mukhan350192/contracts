@@ -1,4 +1,5 @@
 @include('header')
+<meta name="csrf-token" content="{{ csrf_token() }}"/>
 
 <div class="container py-lg-5 py-md-4">
     <div class="row align-items-center">
@@ -323,7 +324,7 @@
 
             "overlay": true,
             "overlayColor": {
-                "default" : "#2F4F4F",
+                "default": "#2F4F4F",
             },
             "overlayTransparency": {
                 "default": 0.55,
@@ -506,14 +507,29 @@
             .then((session_token) => {
                 verilive.successCallback = async (data) => {
                     best_frame = data.best_frame;
-                    let url = 'firstName='+first+'&gender='+gender+'&iin='+iin+'&lastName='+last+'&middleName='+middle+'&originalName='+original+'&facePicture='+face_picture+'&best_frame='+best_frame+'&shortID='+shortID+'&phone='+phone;
+                    let url = 'firstName=' + first + '&gender=' + gender + '&iin=' + iin + '&lastName=' + last + '&middleName=' + middle + '&originalName=' + original + '&facePicture=' + face_picture + '&best_frame=' + best_frame + '&shortID=' + shortID + '&phone=' + phone;
                     $.ajax({
-                        url: "https://api.mircreditov.kz/api/fields?"+url,
-                        type: "GET",
+                        url: "https://api.mircreditov.kz/api/fields",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: "POST",
+                        data: {
+                            firstName: first,
+                            gender: gender,
+                            iin: iin,
+                            lastName: last,
+                            middleName: middle,
+                            originalImage: original,
+                            facePicture: face_picture,
+                            best_frame: best_frame,
+                            shortID: shortID,
+                            phone: phone,
+                        },
                         success: function (response) {
                             console.log(response)
                         },
-                        error: function (response){
+                        error: function (response) {
                             console.log(response)
                         }
                     });

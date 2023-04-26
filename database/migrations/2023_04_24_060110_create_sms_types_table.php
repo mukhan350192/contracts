@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('documents', function (Blueprint $table) {
+        Schema::create('sms_types', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('user_id')->index();
-            $table->string('document');
             $table->string('name');
             $table->timestamps();
         });
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('sms_types');
     }
 };

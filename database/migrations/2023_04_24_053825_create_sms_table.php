@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('documents', function (Blueprint $table) {
+        Schema::create('sms', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('user_id')->index();
-            $table->string('document');
-            $table->string('name');
+            $table->string('phone');
+            $table->string('status')->default(100);
+            $table->string('message');
+            $table->integer('type');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('sms');
     }
 };

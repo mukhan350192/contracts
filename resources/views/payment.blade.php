@@ -1,15 +1,15 @@
 @include('header')
+
 <div class="container">
     <div class="row">
         <div class="col-4">
             @include('sidebar')
         </div>
         <div class="col-8 mt-5">
-            <form id="payment" action="api/partner/payment" method="POST" class="form-outline">
+            <form id="payment">
                 <div class="alert-success">
                     Оплата
                 </div>
-                @csrf
                 <label>Введите сумму</label><br>
                 <input type="number" id="amount">
                 <button type="submit" id="pay" class="btn btn-primary mt-2">Оплатить</button>
@@ -20,14 +20,14 @@
 
 @include('footer')
 <script type="text/javascript">
-    let payment = document.getElementById('payment');
-    payment.addEventListener('submit', function (e){
+    let payment = document.getElementById('pay');
+    payment.addEventListener('click', function (e){
         e.preventDefault();
         let token = localStorage.getItem('token');
         let amount = $("#amount").val()
         console.log(amount)
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: 'api/partner/pay',
             headers: {
                 'Accept': 'application/json',

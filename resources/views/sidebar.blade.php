@@ -7,7 +7,8 @@
 
         <ul class="list-unstyled components">
             <li>
-                    <li><a href="{{url('partner-page')}}">Мои документы</a></li>
+                    <li><a href="{{url('profile')}}">Профиль</a></li>
+                    <li><a href="{{url('partner-page')}}" id="docs">Мои документы</a></li>
                     <li><a href="{{url('upload')}}">Загрузить договор</a></li>
                     <li><a href="{{url('send')}}">Отправить смс</a></li>
                     <li><a href="{{url('dealHistory')}}">История сделок</a></li>
@@ -69,4 +70,16 @@
         // Collapse/Expand icon
         $('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
     }
+
+    document.getElementById('docs').addEventListener('click',function (e){
+        token = localStorage.getItem('token');
+        console.log(token)
+        $.ajax({
+            url: "{{ url('/api/partner/getDocs') }}",
+            type: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + token,
+            },
+        });
+    })
 </script>

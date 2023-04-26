@@ -2,10 +2,13 @@
 
 namespace App\Http\Services;
 
+use App\Models\Document;
+use App\Models\DocumentStatusHistory;
 use App\Models\Payment;
 use App\Models\ShortURL;
 use App\Models\User;
 use Carbon\Carbon;
+use Database\Seeders\DocumentStatus;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -36,7 +39,7 @@ class PartnerService
         string|null $company_type,
         string|null $bin,
         int         $code,
-        string|null      $iin
+        string|null $iin
     ): JsonResponse
     {
         $user = User::where('phone', $phone)->first();
@@ -105,13 +108,17 @@ class PartnerService
         $fileName = sha1(Str::random(50)) . "." . $doc->extension();
         $doc->storeAs('uploads', $fileName, 'public');
         $doc->move(public_path('uploads'), $fileName);
-        DB::table('documents')->insert([
+        $docID = DB::table('documents')->insertGetId([
             'user_id' => $userID,
             'document' => $fileName,
             'name' => $name,
-            'status' => 0,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
+        ]);
+
+        DocumentStatusHistory::create([
+            'status_id' => 1,
+            'doc_id' => $docID,
         ]);
         return response()->success();
     }
@@ -124,6 +131,7 @@ class PartnerService
     public function sign(string $phone, string $password): JsonResponse
     {
         $user = User::where('phone', $phone)->first();
+
         if (!Hash::check($password, $user->password)) {
             return response()->fail('Неправильный логин или пароль');
         }
@@ -131,6 +139,7 @@ class PartnerService
             1 => 'partner',
             2 => 'client',
             3 => 'manager',
+            4 => 'lawyer'
         ];
         $token = $user->createToken('api', [$user_types[$user->user_type]])->plainTextToken;
         $docs = [
@@ -147,7 +156,7 @@ class PartnerService
      */
     public function getDocs(int $userID): JsonResponse
     {
-        $doc = DB::table('documents')->where('user_id', $userID)->get()->toArray();
+        $doc = Document::with('status')->where('user_id', $userID)->get()->toArray();;
         if (!$doc) {
             return response()->fail('Пока у вас нету документов');
         }
@@ -161,7 +170,12 @@ class PartnerService
      */
     public function getActiveDocs(int $userID): JsonResponse
     {
-        $doc = DB::table('documents')->where('user_id', $userID)->where('status', 1)->get()->toArray();
+        $doc = Document::where('user_id',$userID)
+                ->join('document_status_histories','document_status_histories.doc_id','=','documents.id')
+                ->where('document_status_histories.status_id',4)
+                ->get()->toArray();
+
+
         if (!$doc) {
             return response()->fail('Пока у вас нету документов');
         }
@@ -171,6 +185,7 @@ class PartnerService
         if (!$balance || $balance->amount < 1) {
             return response()->fail('У вас не хватает баланса');
         }
+
         $data['doc'] = $doc;
         return response()->success($data);
     }
@@ -276,29 +291,9 @@ class PartnerService
             'iin' => $iin,
         ]);
         $link = 'https://api.mircreditov.kz/sign/' . $token;
-        $messages = [
-            [
-                'notifyUrl' => route('infobip'),
-                'from' => 'ICREDITKZ',
-                'text' => 'Для подтверждение договора перейдите по ссылке ' . $link,
-                'destinations' => [
-                    [
-                        'messageId' => $smsID,
-                        'to' => $phone,
-                    ],
-                ],
-            ],
-        ];
+        $message = 'Для подтверждение договора перейдите по ссылке ' . $link;
 
-        $request = Http::withoutVerifying()
-            ->baseUrl(env('BIPURL'))
-            ->withHeaders([
-                'Authorization' => 'App ' . env('BIPKEY'),
-            ])->asJson()->post('/sms/2/text/advanced', [
-                'messages' => $messages,
-            ]);
-
-        $response = $request->json();
+        $response = $this->sendSMS($message, $smsID, $phone);
 
         $balance = DB::table('balance_history')->where('user_id', $userID)->orderByDesc('created_at')->first();
         $before = 0;
@@ -319,5 +314,75 @@ class PartnerService
         return isset($response['messages'][0]['status']['groupId'])
             && in_array($response['messages'][0]['status']['groupId'], [1, 3]);
 
+    }
+
+    public function sendSMS($message, $smsID, $phone)
+    {
+        $messages = [
+            [
+                'notifyUrl' => route('infobip'),
+                'from' => 'ICREDITKZ',
+                'text' => $message,
+                'destinations' => [
+                    [
+                        'messageId' => $smsID,
+                        'to' => $phone,
+                    ],
+                ],
+            ],
+        ];
+
+        $request = Http::withoutVerifying()
+            ->baseUrl(env('BIPURL'))
+            ->withHeaders([
+                'Authorization' => 'App ' . env('BIPKEY'),
+            ])->asJson()->post('/sms/2/text/advanced', [
+                'messages' => $messages,
+            ]);
+
+        return $request->json();
+    }
+
+    public function remember_password($phone)
+    {
+        $token = Str::random(8);
+        $link = 'https://api.mircreditov.kz/restore/' . $token;
+        $message = 'Для восстановление пароля перейдите по ссылке ' . $link;
+
+        $smsID = DB::table('sms')->insertGetId([
+            'phone' => $phone,
+            'message' => $message,
+            'type' => 2,
+        ]);
+        $userID = User::where('phone', $phone)->select('id')->first();
+        DB::table('restore_url')->insertGetId([
+            'token' => $token,
+            'user_id' => $userID->id,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        $response = $this->sendSMS($message, $smsID, $phone);
+        return isset($response['messages'][0]['status']['groupId'])
+            && in_array($response['messages'][0]['status']['groupId'], [1, 3]);
+    }
+
+    public function restore_password(int $userID, string $password, int $restoreID)
+    {
+        DB::table('restore_url')->where('id', $restoreID)->update(['status' => true, 'updated_at' => Carbon::now()]);
+        $update = User::where('id', $userID)->update(['password' => bcrypt($password)]);
+        if (!$update) {
+            return response()->fail('Попробуйте позже');
+        }
+        return response()->success();
+    }
+
+    public function approveDoc(int $documentID)
+    {
+        DocumentStatusHistory::create([
+            'status_id' => 4,
+            'doc_id' => $documentID,
+        ]);
+        return response()->success();
     }
 }

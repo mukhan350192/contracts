@@ -36,6 +36,15 @@
                     <div class="alert-danger">{{Session::get('error')}}</div>
                 @endif
                 <div id="error" class="alert-danger" style="display: none;">Неправильный логин или пароль</div>
+                <div id="messageError" class="alert-danger"></div>
+                <div class="col">
+                    <!-- Simple link -->
+                    <p>Уже есть аккаунт? <a href="/register">Нету аккаунта? Создайте его</a></p>
+                </div>
+                <div class="col">
+                    <!-- Simple link -->
+                    <p><a href="/remember_password">Забыли пароль?</a></p>
+                </div>
             </form>
 
         </div>
@@ -43,8 +52,8 @@
         <div class="col-lg-4 d-xs-none"></div>
 
 
-        </div>
     </div>
+</div>
 </div>
 @include('footer')
 <script src="https://unpkg.com/imask"></script>
@@ -58,8 +67,18 @@
     login.addEventListener('submit', function (e) {
         e.preventDefault();
         let phone = document.getElementById('phone').value
+        let password = document.getElementById('password').value
         phone = phone.replace(/[^a-zA-Z0-9]/g, '');
-        document.getElementById('phone').value=phone
+        document.getElementById('phone').value = phone
+        if (!password) {
+            document.getElementById('messageError').innerHTML = 'Введите пароль';
+            return
+        }
+        if (password.length < 8) {
+            document.getElementById('messageError').innerHTML = 'Длина пароля должен быть минимум 8 символов';
+            return
+        }
+        document.getElementById('messageError').innerHTML = '';
         let xhr = new XMLHttpRequest();
         xhr.open('POST', this.action);
         xhr.onreadystatechange = function () {
@@ -70,14 +89,17 @@
                     let token = response.token;
                     let type = response.type;
                     localStorage.setItem('token', token);
-                    if (type == 1){
-                        window.location.href = 'partner-page';
+                    if (type == 1) {
+                        window.location.href = 'profile';
                     }
-                    if (type == 2){
+                    if (type == 2) {
                         window.location.href = 'client-page';
                     }
-                    if (type == 3){
+                    if (type == 3) {
                         window.location.href = 'manager-page';
+                    }
+                    if (type == 4) {
+                        window.location.href = 'lawyer-page';
                     }
                 } else {
                     document.getElementById('error').style.display = "block";

@@ -224,7 +224,7 @@
         let ip_name = $("#ip_name").val();
         let c_name = $("#c_name").val();
         let phone = $("#client_phone").val();
-        let ip_phone = $("ip_phone").val();
+        let ip_phone = $("#ip_phone").val();
         let c_phone = $("#c_phone").val();
         let iin = $("#client_iin").val();
         let ip_iin = $("#ip_iin").val();
@@ -258,12 +258,12 @@
         if (type == 2) {
             url = '&name=' + ip_name + '&iin=' + ip_iin + '&phone=' + ip_phone + '&password=' + ip_password + '&company_name=' + company_name;
             number = ip_phone
-            if (!validate_ip(ip_name, ip_iin, ip_phone, ip_password, company_name)) {
+            if (!validate_ip(ip_name, ip_phone, ip_iin, ip_phone, ip_password, company_name)) {
                 return;
             }
         }
         console.log('test2');
-        if (type == 3 || type==4) {
+        if (type == 3 || type == 4) {
             url = 'phone=' + c_phone + '&password=' + c_password + '&company_name=' + c_company_name + '&bin=' + bin;
             number = c_phone
             if (!validate_company(c_phone, c_password, c_company_name, bin)) {
@@ -304,7 +304,7 @@
         let ip_name = $("#ip_name").val();
         let c_name = $("#c_name").val();
         let phone = $("#client_phone").val();
-        let ip_phone = $("ip_phone").val();
+        let ip_phone = $("#ip_phone").val();
         let c_phone = $("#c_phone").val();
         let iin = $("#client_iin").val();
         let ip_iin = $("#ip_iin").val();
@@ -335,11 +335,11 @@
         }
         if (type == 2) {
             url = 'name=' + ip_name + '&iin=' + ip_iin + '&phone=' + ip_phone + '&password=' + ip_password + '&company_name=' + company_name + '&code=' + code;
-            if (!validate_ip(ip_name, ip_iin, ip_phone, ip_password, company_name)) {
+            if (!validate_ip(ip_name, ip_phone, ip_iin, ip_phone, ip_password, company_name)) {
                 return;
             }
         }
-        if (type == 3 || type==4) {
+        if (type == 3 || type == 4) {
             url = 'name=' + c_name + '&phone=' + c_phone + '&password=' + c_password + '&company_name=' + c_company_name + '&bin=' + bin + '&code=' + code;
             if (!validate_company(c_phone, c_password, c_company_name, bin)) {
                 return;
@@ -357,7 +357,7 @@
                 if (res.success) {
                     let token = res.token;
                     localStorage.setItem('token', token)
-                    window.location.href = "partner-page";
+                    window.location.href = "profile";
                 }
             },
             error: function (err) {
@@ -397,7 +397,7 @@
         return true
     }
 
-    function validate_ip(name, iin, number, password, company_name) {
+    function validate_ip(name, phone, iin, number, password, company_name) {
         if (!name) {
             document.getElementById('errorMessage').style.display = 'block'
             document.getElementById('errorMessage').innerHTML = 'Введите имя'

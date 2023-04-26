@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CHeckRequest;
 use App\Http\Requests\ManagerRequest;
 use App\Http\Services\LawyerService;
 use App\Models\User;
@@ -15,5 +16,11 @@ class LawyerController extends Controller
 
     public function uncheckingDocs(LawyerService $service){
         return $service->getDocs();
+    }
+
+    public function approve(Request $request, LawyerService $service){
+//        var_dump($request->all());
+//        var_dump($request->document_id);
+        return $service->approve($request->document_id,$request->file,$request->comment);
     }
 }

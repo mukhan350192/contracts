@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('documents', function (Blueprint $table) {
+        Schema::create('restore_url', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('user_id')->index();
-            $table->string('document');
-            $table->string('name');
+            $table->string('token');
+            $table->unsignedInteger('user_id');
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('restore_url');
     }
 };

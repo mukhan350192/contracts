@@ -10,6 +10,9 @@
             <div class="alert-danger" style="display: none;" id="danger">
                 <strong>Произошло ошибка, попробуйте позже</strong>
             </div>
+            <div class="alert-danger" style="display: none;" id="error">
+
+            </div>
             <form id="upload" method="post" class="register" action="api/partner/addDocs">
                 @csrf
                 <strong class="form-outline mb-4 text-center">Загружайте свои документы отсюда</strong>
@@ -46,8 +49,12 @@
                 if (success) {
                     document.getElementById('success').style.display = "block";
                 } else {
-                    document.getElementById('error').style.display = "block";
+                    document.getElementById('danger').style.display = "block";
                 }
+            }
+            if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 422){
+                document.getElementById('error').innerHTML = 'Загружайте файлы только в формате pdf,doc,docx';
+                document.getElementById('error').style.display = "block";
             }
         }
         xhr.send(new FormData(this));

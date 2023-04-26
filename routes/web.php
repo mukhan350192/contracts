@@ -22,6 +22,8 @@ Route::get('/', function () {
 Route::get('/register',function (){
    return view('register');
 });
+
+Route::get('restore/{token}',[ShortURLController::class,'restore']);
 Route::get('/remember_password',function (){
     return view('remember_password');
 });
@@ -30,6 +32,9 @@ Route::get('partner-page',function (){
 });
 Route::get('login',function (){
     return view('login');
+});
+Route::get('profile',function (){
+    return view('profile');
 });
 Route::get('upload',function (){
     return view('upload');
@@ -53,6 +58,9 @@ Route::get('sign/{token}',[ShortURLController::class,'sign']);
 
 Route::get('client-page',function (){
     return view('client-page');
+});
+Route::get('lawyer-page',function (){
+    return view('lawyer-page');
 });
 
 Route::get('super-admin',function (){

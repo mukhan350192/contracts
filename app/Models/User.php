@@ -19,6 +19,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
         'name',
         'phone',
         'user_type',
@@ -69,5 +70,13 @@ class User extends Authenticatable
         ]);
         $token = $user->createToken('api', ['lawyer'])->plainTextToken;
         return response()->success(['token' => $token]);
+    }
+
+    /***
+     * @param int $id
+     * @return JsonResponse
+     */
+    public static function profile(int $id): JsonResponse{
+        return response()->success([User::where('id',$id)->select('name','phone','iin')->first()]);
     }
 }

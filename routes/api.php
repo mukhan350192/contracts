@@ -31,14 +31,14 @@ Route::post('partner/sign',[UserController::class,'sign']);
 Route::post('paymentResult',[UserController::class,'paymentResult']);
 Route::middleware(['auth:sanctum', 'abilities:partner'])->group(function (): void {
     Route::prefix('partner')->group(function(){
-        Route::post('/addDocs',[UserController::class,'addDocs']);
-        Route::post('pay',[UserController::class,'payment']);
-
+        Route::post('addDocs',[UserController::class,'addDocs']);
+        Route::get('pay',[UserController::class,'payment']);
         Route::get('getActiveDocs',[UserController::class,'getActiveDocs']);
         Route::get('getDocs',[UserController::class,'getDocs']);
-
         Route::get('send',[UserController::class,'send']);
         Route::get('logout',[UserController::class,'logout']);
+        Route::get('profile',[UserController::class,'profile']);
+        Route::get('approve',[UserController::class,'approve']);
     });
 });
 Route::any('infobip',[SMSController::class,'infobip'])->name('infobip');
@@ -65,7 +65,17 @@ Route::post('fields',[VerigramController::class,'fields']);
 Route::post('verilive',[VerigramController::class,'verilive']);
 Route::post('bmg',[VerigramController::class,'bmg']);
 
-Route::prefix('lawyer')->group(function(){
-    Route::post('/create',[LawyerController::class,'create']);
-    Route::get('uncheckingDocs',[LawyerController::class,'uncheckingDocs']);
+
+//lawyer
+Route::post('lawyer/create',[LawyerController::class,'create']);
+Route::middleware(['auth:sanctum','abilities:lawyer'])->group(function():void{
+    Route::prefix('lawyer')->group(function(){
+        Route::get('uncheckingDocs',[LawyerController::class,'uncheckingDocs']);
+        Route::post('approve',[LawyerController::class,'approve']);
+    });
+
 });
+
+//remember
+Route::get('/remember_password',[UserController::class,'remember_password']);
+Route::get('/restore_password',[UserController::class,'restore_password']);

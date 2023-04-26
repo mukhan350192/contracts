@@ -592,3 +592,46 @@ a.article:hover {
         text-align: left;
     }
 }
+@media screen and (max-width: 768px){
+    body,p{
+        font-size: 36px;
+    }
+    .icon-info p{
+        font-size: 36px;
+    }
+    .icon-info h5{
+        font-size: 36px;
+    }
+    #howItWorks h3{
+        font-size: 48px;
+    }
+    .area-box h4{
+        font-size: 48px;
+    }
+    .area-box p{
+        font-size: 36px;
+    }
+    .panel .panel-body .table tbody tr td{
+        font-size: 24px;
+    }
+    .feature-grid-right p {
+        font-size: 24px;
+        font-family: cursive;
+    }
+    .feature-grid-right h3{
+        font-size: 36px;
+        font-family: cursive;
+    }
+    h5{
+        font-size: 48px;
+    }
+    label{
+        font-size: 40px;
+    }
+    .form-control{
+        height: 64px;
+    }
+    .register button{
+        height: 96px;
+    }
+}

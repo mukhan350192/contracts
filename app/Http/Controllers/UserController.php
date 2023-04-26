@@ -3,17 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\clientRequest;
+use App\Http\Requests\DocumentCheckRequest;
 use App\Http\Requests\DocumentRequest;
 use App\Http\Requests\PartnerRequest;
 use App\Http\Requests\PaymentResultRequest;
+use App\Http\Requests\PhonePartnerRequest;
+use App\Http\Requests\RestoreRequest;
 use App\Http\Requests\SignRequest;
 use App\Http\Requests\SMSRequest;
 use App\Http\Services\ClientService;
 use App\Http\Services\ManagerService;
 use App\Http\Services\PartnerService;
 use App\Models\Sms;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
@@ -34,31 +39,54 @@ class UserController extends Controller
      */
     public function addDocs(DocumentRequest $request, PartnerService $service): JsonResponse
     {
-        //var_dump(auth()->user());
         return $service->addDocs($request->doc, $request->name, auth()->user()->id);
     }
 
-    public function sign(SignRequest $request, PartnerService $service)
+    /**
+     * @param SignRequest $request
+     * @param PartnerService $service
+     * @return JsonResponse
+     */
+    public function sign(SignRequest $request, PartnerService $service): JsonResponse
     {
         return $service->sign($request->phone, $request->password);
     }
 
-    public function getDocs(PartnerService $service)
+    /***
+     * @param PartnerService $service
+     * @return JsonResponse
+     */
+    public function getDocs(PartnerService $service): JsonResponse
     {
         return $service->getDocs(auth()->user()->id);
     }
 
-    public function getActiveDocs(PartnerService $service)
+    /**
+     * @param PartnerService $service
+     * @return JsonResponse
+     */
+    public function getActiveDocs(PartnerService $service): JsonResponse
     {
         return $service->getActiveDocs(auth()->user()->id);
     }
 
-    public function payment(Request $request, PartnerService $service)
+    /**
+     * @param Request $request
+     * @param PartnerService $service
+     * @return JsonResponse
+     */
+    public function payment(Request $request, PartnerService $service): JsonResponse
     {
         return $service->payment(auth()->user()->id, $request->amount);
     }
 
-    public function paymentResult(Request $request, PartnerService $service)
+
+    /**
+     * @param Request $request
+     * @param PartnerService $service
+     * @return JsonResponse
+     */
+    public function paymentResult(Request $request, PartnerService $service): JsonResponse
     {
         if (!$request->extra_user_id || !$request->pg_amount || !$request->pg_payment_id) {
             return response()->fail('Попробуйте позже');
@@ -66,33 +94,88 @@ class UserController extends Controller
         return $service->paymentResult($request->extra_user_id, $request->pg_amount, $request->pg_payment_id);
     }
 
-    public function send(SMSRequest $request, PartnerService $service)
+    /**
+     * @param SMSRequest $request
+     * @param PartnerService $service
+     * @return JsonResponse
+     */
+    public function send(SMSRequest $request, PartnerService $service): JsonResponse
     {
-        // var_dump($request);
         $smsID = Sms::make(auth()->user()->id, $request->phone);
-        //var_dump($smsID);
         return $service->send(auth()->user()->id, $request->phone, $request->iin, $smsID, $request->document_id);
     }
 
+    /**
+     * @param clientRequest $request
+     * @param ClientService $service
+     * @return JsonResponse
+     */
     public function clientCreate(clientRequest $request, ClientService $service): JsonResponse
     {
         return $service->create($request->iin, $request->password, $request->phone, $request->id);
     }
 
-    public function getClientDocs(ClientService $service)
+    /**
+     * @param ClientService $service
+     * @return JsonResponse
+     */
+    public function getClientDocs(ClientService $service): JsonResponse
     {
         return $service->clientDocs(auth()->user()->id);
     }
 
-    public function managerCreate(Request $request, ManagerService $service)
+    /**
+     * @param Request $request
+     * @param ManagerService $service
+     * @return JsonResponse
+     */
+    public function managerCreate(Request $request, ManagerService $service): JsonResponse
     {
-        return $service->create($request->phone,$request->password,$request->iin,$request->name);
+        return $service->create($request->phone, $request->password, $request->iin, $request->name);
     }
 
-    public function logout(){
+    /**
+     * @return JsonResponse
+     */
+    public function logout(): JsonResponse
+    {
         $user = auth()->user();
         $s = $user->currentAccessToken()->delete();
         return response()->success();
 
+    }
+
+    /**
+     * @param PhonePartnerRequest $request
+     * @param PartnerService $service
+     * @return boolean
+     */
+    public function remember_password(PhonePartnerRequest $request, PartnerService $service): bool
+    {
+        return $service->remember_password($request->phone);
+    }
+
+    /**
+     * @param RestoreRequest $request
+     * @param PartnerService $service
+     * @return JsonResponse
+     */
+
+    public function restore_password(RestoreRequest $request, PartnerService $service): JsonResponse
+    {
+        return $service->restore_password($request->userID, $request->password, $request->restoreID);
+    }
+
+    /***
+     * @return JsonResponse
+     */
+    public function profile(): JsonResponse
+    {
+        return User::profile(auth()->user()->id);
+
+    }
+
+    public function approve(DocumentCheckRequest $request,PartnerService $service): JsonResponse{
+        return $service->approveDoc($request->documentID);
     }
 }

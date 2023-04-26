@@ -20,6 +20,7 @@ class UserTypesSeeder extends Seeder
           'ТОО',
           'АО'
         ];
+        DB::table('user_types')->truncate();
         foreach ($data as $d){
             DB::table('user_types')->insertGetId([
                'name' => $d,

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ShortURL;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ShortURLController extends Controller
 {
@@ -18,5 +19,20 @@ class ShortURLController extends Controller
             'phone' => $data['phone']
         ];
         return view('sign')->with($new);
+    }
+
+    public function restore($token){
+        $data = DB::table('restore_url')->where('token',$token)->where('status',false)->first();
+
+        if (!$data){
+            $return = ['code' => 404];
+            return view('restore')->with($return);
+        }
+        $return = [
+            'restoreID' => $data->id,
+            'userID' => $data->user_id,
+            'code' => 200,
+        ];
+        return view('restore')->with($return);
     }
 }

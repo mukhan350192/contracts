@@ -10,7 +10,7 @@
                 @csrf
 
                 <div class="form-outline col-md-12 mb-4 text-center fs-6">
-                    <label for="phone"><strong>Телефон</strong></label>
+                    <label id="phone-label" for="phone"><strong>Телефон</strong></label>
                     <input type="text" id="phone"
                            class="form-control input-lg bg-light @error('phone') is-invalid @enderror"
                            name="phone"
@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="form-outline col-md-12 mb-4 text-center fs-6">
-                    <label for="password"><strong>Пароль</strong></label>
+                    <label for="password" id="password-label"><strong>Пароль</strong></label>
                     <input type="password" id="password"
                            class="form-control input-lg bg-light @error('password') is-invalid @enderror"
                            name="password" required autofocus>
@@ -31,7 +31,7 @@
                 </div>
 
 
-                <button type="submit" class="form-control col-md-12 mb-4 text-center fs-6 p-3 register">Войти</button>
+                <button type="submit" class="form-control col-md-12 mb-4 text-center fs-6 p-3 register" id="sign"><label>Войти</label></button>
                 @if (Session::has('error'))
                     <div class="alert-danger">{{Session::get('error')}}</div>
                 @endif
@@ -39,11 +39,11 @@
                 <div id="messageError" class="alert-danger"></div>
                 <div class="col">
                     <!-- Simple link -->
-                    <p>Уже есть аккаунт? <a href="/register">Нету аккаунта? Создайте его</a></p>
+                    <p id="register_hint">Нету аккаунта?<a href="/register"> Создайте его</a></p>
                 </div>
                 <div class="col">
                     <!-- Simple link -->
-                    <p><a href="/remember_password">Забыли пароль?</a></p>
+                    <p id="remember"><a href="/remember_password">Забыли пароль?</a></p>
                 </div>
             </form>
 

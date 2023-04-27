@@ -639,13 +639,49 @@ a.article:hover {
 #menu_select{
     display: none;
 }
-@media (max-width: 960px) {
+@media only screen and (max-device-width: 480px) {
     nav ul     { display: none; }
     .sidebar-header {display: none;}
-    #menu_select { display: inline-block; }
+    #menu_select { display: inline-block;
+        font-size: 48px;
+    }
+
 }
-@media (min-width: 468px) {
-    nav ul     { display: none; }
-    .sidebar-header {display: none;}
-    #menu_select { display: inline-block; }
+@media only screen and (max-device-width: 480px) {
+    #login h5{
+        font-size: 48px;
+    }
+    #phone-label,#password-label,#sign{
+        font-size: 42px;
+    }
+    #phone,#password{
+        font-size: 36px;
+    }
+    #sign label{
+        color: white;
+        font-size: 48px;
+    }
+    #register_hint{
+        font-size: 36px;
+    }
+    #remember{
+        font-size: 36px;
+    }
+    #map iframe{
+        width: 800px;
+        height: 900px;
+    }
+    #footer{
+        height: 600px;
+    }
+    #footer h6{
+        font-size: 48px;
+    }
+    #footer p{
+        font-size: 48px;
+    }
+    .w3l-footer .footer-list-28 ul li a, .w3l-footer .footer-list-28 ul li p{
+        line-height: 1;
+    }
 }
+

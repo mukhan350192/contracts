@@ -49,6 +49,7 @@
             console.log(response)
             console.log('test')
             console.log(jqXHR.status)
+            console.log(response)
             if (response.success) {
                 let doc = document.getElementById('docs');
                 let select = $('#select');

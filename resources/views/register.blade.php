@@ -280,6 +280,9 @@
             },
             success: function (res) {
                 console.log(res)
+                if (res.success == false){
+                    document.getElementById('errorMessage').innerHTML = res.message;
+                }
                 if (res == 1) {
                     document.getElementById('code').style.display = "block";
                     document.getElementById('button').style.display = "none";

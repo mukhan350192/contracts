@@ -285,7 +285,7 @@
                     document.getElementById('button').style.display = "none";
                     document.getElementById('check').style.display = "block";
                 } else {
-                    document.getElementById('errorMessage').innerHTML = "Попробуйте позже";
+                    document.getElementById('errorMessage').innerHTML = "Пользователь уже зарегистрован";
                 }
                 console.log(res)
             },

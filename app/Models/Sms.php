@@ -28,6 +28,11 @@ class Sms extends Model
 
     public static function send(string $phone){
         $code = rand(1000,9999);
+
+        $user = User::where('phone',$phone)->first();
+        if ($user){
+            return response()->fail('Пользователь уже зарегистрован');
+        }
         $smsID = DB::table('sms_confirmation')->insertGetId([
            'code' => $code,
            'phone' => $phone,

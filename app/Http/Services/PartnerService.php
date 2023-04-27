@@ -53,7 +53,7 @@ class PartnerService
         $user = User::create([
             'name' => $name,
             'phone' => $phone,
-            'password' => $password,
+            'password' => bcrypt($password),
             'user_type' => 1,
             'iin' => $iin,
         ]);

@@ -644,3 +644,8 @@ a.article:hover {
     .sidebar-header {display: none;}
     #menu_select { display: inline-block; }
 }
+@media (min-width: 468px) {
+    nav ul     { display: none; }
+    .sidebar-header {display: none;}
+    #menu_select { display: inline-block; }
+}

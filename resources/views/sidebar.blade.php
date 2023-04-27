@@ -1,5 +1,20 @@
-<div class="wrapper col-lg-4">
+<div class="col-lg-4 col-md-12 col-sm-12">
+    <select name="" id="menu_select" selected="selected" class="mb-2 mt-2 col-md-12 form-select">
+        <option value="profile">Профиль</option>
+        <option value="partner-page" id="docs">Мои документы</option>
+        <option value="upload">Загрузить договор</option>
+        <option value="send">Отправить смс</option>
+        <option value="dealHistory">История сделок</option>
+        <option value="transactionHistory">История транзакцией</option>
+        <option value="rates">Тарифы</option>
+        <option value="payment">Пополнить баланс</option>
+        <option id="logout" href="#" onclick="logout()">Выйти</option>
+
+    </select>
+</div>
+<div class="wrapper col-lg-4 col-md-12 col-sm-12">
     <!-- Sidebar Holder -->
+
     <nav id="sidebar">
         <div class="sidebar-header">
             <h3>Меню</h3>
@@ -19,9 +34,24 @@
 
             </li>
         </ul>
+
     </nav>
 </div>
 <script type="text/javascript">
+    let menu_select = document.getElementById('menu_select');
+    let storedSelect = localStorage.getItem('menu_select');
+
+    if (storedSelect){
+        menu_select.value = storedSelect;
+    }
+    menu_select.addEventListener('change', (event) => {
+        const selectedOption = event.target.value;
+        localStorage.setItem('menu_select', selectedOption);
+    });
+    // Create default option "Go to..."
+    $("#menu_select").change(function(e) {
+        window.location = $(this).find("option:selected").val();
+    });
     function logout(){
         let token = localStorage.getItem('token')
         console.log(token)

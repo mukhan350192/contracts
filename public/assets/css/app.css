@@ -635,3 +635,12 @@ a.article:hover {
         height: 96px;
     }
 }
+
+#menu_select{
+    display: none;
+}
+@media (max-width: 960px) {
+    nav ul     { display: none; }
+    .sidebar-header {display: none;}
+    #menu_select { display: inline-block; }
+}

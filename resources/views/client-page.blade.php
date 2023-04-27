@@ -8,7 +8,7 @@
             <div class="circle-core"></div>
         </div>
     </div>
-    <div class="panel" id="docs">
+    <div class="panel col-md-12" id="docs">
         <div class="panel-heading">
             <div class="row">
                 <div class="col col-sm-3 col-xs-12">

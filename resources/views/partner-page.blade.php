@@ -2,7 +2,7 @@
 <header>
     <div class="container py-lg-5 py-md-4 mt-4">
         <div class="row">
-            <div class="col-3">
+            <div class="col-3 col-md-12">
                 <nav id="sidebarMenu" class="d-lg-block sidebar bg-white">
                     <div class="list-group list-group-flush mx-3 mt-4">
 
@@ -18,7 +18,7 @@
                 </nav>
             </div>
 
-            <div class="col-9 p-4">
+            <div class="col-9 p-4 col-md-12 col-sm-12">
                 {{--
                 <div id="loading" style="display: none;">Loading...</div>
                 --}}
@@ -27,7 +27,7 @@
                         <div class="circle-core"></div>
                     </div>
                 </div>
-                <div class="panel" id="docs">
+                <div class="panel col-md-12" id="docs">
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col col-sm-3 col-xs-12">

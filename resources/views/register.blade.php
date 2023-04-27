@@ -281,6 +281,7 @@
             success: function (res) {
                 console.log(res)
                 if (res.success == false){
+                    console.log('here')
                     document.getElementById('errorMessage').innerHTML = res.message;
                 }
                 if (res == 1) {
@@ -288,6 +289,7 @@
                     document.getElementById('button').style.display = "none";
                     document.getElementById('check').style.display = "block";
                 } else {
+                    console.log('here2')
                     document.getElementById('errorMessage').innerHTML = "Пользователь уже зарегистрован";
                 }
                 console.log(res)

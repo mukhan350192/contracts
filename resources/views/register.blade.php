@@ -281,7 +281,7 @@
             success: function (res) {
                 console.log(res)
                 if (res.success == false){
-                    console.log('here')
+                    document.getElementById('errorMessage').style.display = 'block'
                     document.getElementById('errorMessage').innerHTML = res.message;
                 }
                 if (res == 1) {

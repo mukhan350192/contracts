@@ -92,6 +92,8 @@
                     action.setAttribute('id', response.doc[i].id)
                     act.appendChild(action)
                     document.getElementById(response.doc[i].id).addEventListener('click', function (e) {
+
+
                         const modal = document.createElement('div');
                         modal.classList.add('modal', 'fade');
                         modal.setAttribute('tabindex', '-1');
@@ -158,11 +160,13 @@
                         modalBody.appendChild(comment)
 
                         let success = document.createElement('div')
-                        success.setAttribute('class', 'alert-danger')
+                        success.setAttribute('class', 'alert-success')
+                        success.setAttribute('id', 'success')
                         modalBody.appendChild(success)
 
                         let error = document.createElement('div')
-                        error.setAttribute('class', 'alert-success')
+                        error.setAttribute('class', 'alert-danger')
+                        success.setAttribute('id', 'error')
                         modalBody.appendChild(error)
 
                         // create the modal footer element

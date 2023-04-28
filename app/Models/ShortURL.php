@@ -26,4 +26,8 @@ class ShortURL extends Model
             ->select('short_u_r_l_s.id','document_id','iin','phone','name')
             ->first();
     }
+
+    public function sendingDocs(){
+        return $this->hasOne(Document::class,'id','document_id')->latest();
+    }
 }

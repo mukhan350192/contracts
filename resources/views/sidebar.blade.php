@@ -1,4 +1,4 @@
-<div class="col-lg-4 col-md-12 col-sm-12">
+<div class="col-md-12 col-sm-12">
     <select name="" id="menu_select" selected="selected" class="mb-2 mt-2 col-md-12 form-select">
         <option value="profile">Профиль</option>
         <option value="partner-page" id="docs">Мои документы</option>

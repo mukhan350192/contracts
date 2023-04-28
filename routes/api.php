@@ -39,6 +39,7 @@ Route::middleware(['auth:sanctum', 'abilities:partner'])->group(function (): voi
         Route::get('logout',[UserController::class,'logout']);
         Route::get('profile',[UserController::class,'profile']);
         Route::get('approve',[UserController::class,'approve']);
+        Route::get('getSendingSMS',[UserController::class,'getSendingSMS']);
     });
 });
 Route::any('infobip',[SMSController::class,'infobip'])->name('infobip');

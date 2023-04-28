@@ -2,7 +2,7 @@
 <header>
     <div class="container py-lg-5 py-md-4 mt-4">
         <div class="row">
-            <div class="col-4 col-md-12">
+            <div class="col-lg-4 col-md-12">
                 <nav id="sidebarMenu" class="d-lg-block sidebar bg-white">
                     <div class="list-group list-group-flush mx-3 mt-4">
 
@@ -18,7 +18,7 @@
                 </nav>
             </div>
 
-            <div class="col-8 p-4 col-md-12">
+            <div class="col-lg-8 p-4 col-md-12">
                 {{--
                 <div id="loading" style="display: none;">Loading...</div>
                 --}}

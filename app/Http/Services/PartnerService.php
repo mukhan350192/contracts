@@ -172,6 +172,7 @@ class PartnerService
     {
         $doc = Document::where('user_id',$userID)
                 ->join('document_status_histories','document_status_histories.doc_id','=','documents.id')
+                ->select('documents.id','documents.name')
                 ->where('document_status_histories.status_id',4)
                 ->get()->toArray();
 
@@ -384,5 +385,9 @@ class PartnerService
             'doc_id' => $documentID,
         ]);
         return response()->success();
+    }
+
+    public function getSendingSMS(int $userID){
+            return response()->success(['data'=>ShortURL::with('sendingDocs')->get()]);
     }
 }

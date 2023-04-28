@@ -178,4 +178,8 @@ class UserController extends Controller
     public function approve(DocumentCheckRequest $request,PartnerService $service): JsonResponse{
         return $service->approveDoc($request->documentID);
     }
+
+    public function getSendingSMS(Request $request,PartnerService $service){
+        return $service->getSendingSMS($request->user()->id);
+    }
 }

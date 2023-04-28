@@ -2,7 +2,7 @@
 <header>
     <div class="container py-lg-5 py-md-4 mt-4">
         <div class="row">
-            <div class="col-3 col-md-12">
+            <div class="col-lg-3 col-md-12">
                 <nav id="sidebarMenu" class="d-lg-block sidebar bg-white">
                     <div class="list-group list-group-flush mx-3 mt-4">
 
@@ -10,15 +10,15 @@
 
 
                             @include('sidebar')
-                            <div class="col-lg-8">
+                           {{-- <div class="col-lg-8">
 
-                            </div>
+                            </div>--}}
                         </div>
                     </div>
                 </nav>
             </div>
 
-            <div class="col-9 p-4 col-md-12 col-sm-12">
+            <div class="col-lg-9 p-4 ml-6 col-md-9">
                 {{--
                 <div id="loading" style="display: none;">Loading...</div>
                 --}}

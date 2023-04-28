@@ -18,4 +18,5 @@ class Document extends Model
         return $this->hasOne(DocumentStatusHistory::class,'doc_id','id')->latest();
     }
 
+
 }

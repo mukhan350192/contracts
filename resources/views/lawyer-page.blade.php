@@ -166,7 +166,7 @@
 
                         let error = document.createElement('div')
                         error.setAttribute('class', 'alert-danger')
-                        success.setAttribute('id', 'error')
+                        error.setAttribute('id', 'error')
                         modalBody.appendChild(error)
 
                         // create the modal footer element

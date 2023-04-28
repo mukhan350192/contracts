@@ -106,7 +106,6 @@
             },
             error: function (xhr) {
                 console.log(xhr)
-                console.log(data)
             },
             complete: function () {
 

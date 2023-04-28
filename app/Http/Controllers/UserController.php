@@ -99,7 +99,7 @@ class UserController extends Controller
      * @param PartnerService $service
      * @return JsonResponse
      */
-    public function send(SMSRequest $request, PartnerService $service): JsonResponse
+    public function send(SMSRequest $request, PartnerService $service): string
     {
         $smsID = Sms::make(auth()->user()->id, $request->phone);
         return $service->send(auth()->user()->id, $request->phone, $request->iin, $smsID, $request->document_id);

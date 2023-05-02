@@ -48,8 +48,32 @@
         const selectedOption = event.target.value;
         localStorage.setItem('menu_select', selectedOption);
     });
+    document.getElementById('logout').addEventListener('click',function (e){
+        let token = localStorage.getItem('token')
+        console.log(token)
+        $.ajax({
+            type: 'GET',
+            url: 'api/partner/logout',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            success: function (res) {
+                console.log(res)
+            },
+            error: function (err) {
+                document.getElementById('error').style.display = "block";
+            }
+        });
+        localStorage.removeItem('token')
+        window.location.href='/';
+    });
     // Create default option "Go to..."
     $("#menu_select").change(function(e) {
+        if ($(this).find("option:selected").val() == 'Выйти'){
+            logout()
+            return
+        }
         window.location = $(this).find("option:selected").val();
     });
     function logout(){

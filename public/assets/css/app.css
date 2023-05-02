@@ -648,24 +648,71 @@ a.article:hover {
 
 }
 @media only screen and (max-device-width: 480px) {
-    #login h5{
+    #login{
+        margin-left: -130px;
+        margin-top: 100px;
+        width: 970px;
+    }
+    #main_menu{
+        font-size: 64px;
+    }
+    .title-big{
         font-size: 48px;
     }
+    .img-effect{
+        margin-left: -20px;
+        width: 840px;
+        height: 100%;
+    }
+    .icon-info h5{
+        font-size: 48px;
+    }
+    .icon-info p{
+        font-size: 36px;
+    }
+    .area-box h4{
+        font-size: 48px;
+    }
+    .area-box p{
+        font-size: 36px;
+    }
+    .stats-con h3{
+        font-size: 48px;
+    }
+    .main-cont-wthree-2 h3{
+        font-size: 48px;
+    }
+    .main-cont-wthree-2 p{
+        font-size: 36px;
+    }
+    .stats-con p{
+        font-size: 108px;
+    }
+    .mb-1{
+        font-size: 24px;
+        font-family: 'Spartan', sans-serif;
+    }
+    .nav-link{
+        font-size: 48px;
+    }
+    #login h5{
+        font-size: 96px;
+    }
     #phone-label,#password-label,#sign{
-        font-size: 42px;
+        font-size: 84px;
     }
     #phone,#password{
-        font-size: 36px;
+        font-size: 72px;
     }
     #sign label{
         color: white;
-        font-size: 48px;
+        font-size: 96px;
     }
     #register_hint{
-        font-size: 36px;
+        font-size: 72px;
     }
     #remember{
-        font-size: 36px;
+        font-size: 72px;
     }
     #map iframe{
         width: 800px;
@@ -673,6 +720,9 @@ a.article:hover {
     }
     #footer{
         height: 600px;
+    }
+    .w3l-footer{
+        margin-top: 200px;
     }
     #footer h6{
         font-size: 48px;

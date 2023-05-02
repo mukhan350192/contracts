@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 
 class ClientService
 {
+    //create new method
     public function create(string $iin, string $password, string $phone, int $id)
     {
         $user = User::create([

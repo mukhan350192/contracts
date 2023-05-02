@@ -20,6 +20,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//create unit tests for all routes
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

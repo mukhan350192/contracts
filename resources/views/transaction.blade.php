@@ -57,18 +57,35 @@
             }else{
                 document.getElementById('table').style.display = "block";
                 let docs = response.data;
+                console.log(docs)
                 let content = '';
                 let index = 0;
-                for (let i = 0; i < docs.length; i++) {
+                for (let i = 0; i < docs.transactions.length; i++) {
+                    console.log(docs.transactions[i].amount)
                     index++;
+                    let status = '';
+                    if (docs.transactions[i].status == 'income'){
+                        status = 'Приход';
+                    }else{
+                        status = 'Расход';
+                    }
+                    let now = new Date(docs.transactions[i].created_at);
+                    const day = now.getDate().toString().padStart(2, '0'); // add leading zero if needed
+                    const month = (now.getMonth() + 1).toString().padStart(2, '0'); // months start from 0, so add 1
+                    const year = now.getFullYear().toString();
+                    const hour = now.getHours().toString().padStart(2, '0');
+                    const minute = now.getMinutes().toString().padStart(2, '0');
+                    const second = now.getSeconds().toString().padStart(2, '0');
+                    const formattedDate = `${day}.${month}.${year} ${hour}:${minute}:${second}`;
+
                     content += '<tr>';
                     content += '<td>' + index + '</td>';
-                    content += '<td>' + docs[i].amount + '</td>';
-                    content += '<td>' + docs[i].status + '</td>';
-                    content += '<td>' + docs[i].balance_before + '</td>';
-                    content += '<td>' + docs[i].balance_after + '</td>';
-                    content += '<td>' + docs[i].description + '</td>';
-                    content += '<td>' + docs[i].created_at + '</td>';
+                    content += '<td>' + docs.transactions[i].amount + '</td>';
+                    content += '<td>' + status + '</td>';
+                    content += '<td>' + docs.transactions[i].balance_before + '</td>';
+                    content += '<td>' + docs.transactions[i].balance_after + '</td>';
+                    content += '<td>' + docs.transactions[i].description + '</td>';
+                    content += '<td>' + formattedDate + '</td>';
                     content += '</tr>';
                 }
                 document.getElementById('docs_content').innerHTML = content;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 
+use App\Models\ShortURL;
 use App\Models\VerigramSignHistory;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -63,8 +64,17 @@ class VerigramService
         $best_frame_name = sha1(Str::random(50)) . ".jpeg";
         Storage::disk('local')->put('docs/' . $best_frame_name, $best);
 
+        $this->updateStatus($shortID);
+
         VerigramSignHistory::make($firstName, $gender, $iin, $lastName, $middleName, $originalName, $faceName, $shortID, $phone, $best_frame_name);
         return response()->success();
+    }
+
+
+    public function updateStatus($shortID){
+        return ShortURL::where('id',$shortID)->update([
+            'status' => 1
+        ]);
     }
 
     public function verilive(int $document_id, $image)

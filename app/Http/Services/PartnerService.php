@@ -388,6 +388,6 @@ class PartnerService
     }
 
     public function getSendingSMS(int $userID){
-            return response()->success(['data'=>ShortURL::with('sendingDocs')->get()]);
+            return response()->success(['data'=>ShortURL::with('sendingDocs')->with('signHistory')->where('user_id',$userID)->get()]);
     }
 }

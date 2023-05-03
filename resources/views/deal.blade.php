@@ -94,7 +94,7 @@
                         button.textContent = 'Детали'
                         details.appendChild(button)
 
-                       document.getElementById(response.doc[i].id).addEventListener('click', function (e) {
+                       document.getElementById(response.data[i].id).addEventListener('click', function (e) {
                             const modal = document.createElement('div');
                             modal.classList.add('modal', 'fade');
                             modal.setAttribute('tabindex', '-1');
@@ -135,13 +135,46 @@
                             const modalBody = document.createElement('div');
                             modalBody.classList.add('modal-body');
 
+                            //create table with four columns
+                            let table = document.createElement('table')
+                            table.classList.add('table')
+                            let thead = document.createElement('thead')
+                            let tr = document.createElement('tr')
+                            let th1 = document.createElement('th')
+                            th1.textContent = 'ФИО подписанта'
+                            let th2 = document.createElement('th')
+                            th2.textContent = 'ИИН подписанта'
+                            let th3 = document.createElement('th')
+                            th3.textContent = 'Телефон подписанта'
+                            let th4 = document.createElement('th')
+                            th4.textContent = 'Фото подписанта'
+                            tr.appendChild(th1)
+                            tr.appendChild(th2)
+                            tr.appendChild(th3)
+                            tr.appendChild(th4)
+                            thead.appendChild(tr)
+                            table.appendChild(thead)
+                            let tbody = document.createElement('tbody')
+                            let tr1 = document.createElement('tr')
+                            let td1 = document.createElement('td')
+                            td1.textContent = response.data[i].sign_history.lastName+" "+response.data[i].sign_history.firstName+" "+response.data[i].sign_history.middleName;
+                            let td2 = document.createElement('td')
+                            td2.textContent = response.data[i].sign_history.iin
+                            let td3 = document.createElement('td')
+                            td3.textContent = response.data[i].sign_history.phone
+                            let td4 = document.createElement('td')
+                            let img = document.createElement('img')
+                            img.src = 'uploads/'+response.data[i].sign_history.photo
+                            img.style.width = '100px'
+                            td4.appendChild(img)
+                            tr1.appendChild(td1)
+                            tr1.appendChild(td2)
+                            tr1.appendChild(td3)
+                            tr1.appendChild(td4)
+                            tbody.appendChild(tr1)
+                            table.appendChild(tbody)
+                            modalBody.appendChild(table)
 
-                            let comment = document.createElement('textarea')
-                            comment.setAttribute('type', 'text')
-                            comment.setAttribute('class', 'form-control')
-                            comment.setAttribute('rows', 4)
-                            comment.setAttribute('col', 50)
-                            modalBody.appendChild(comment)
 
                             // create the modal footer element
                             const modalFooter = document.createElement('div');
@@ -155,14 +188,6 @@
                             modalCloseButton.setAttribute('data-bs-dismiss', 'modal')
                             modalCloseButton.textContent = 'Закрыть'
                             modalFooter.appendChild(modalCloseButton)
-
-                            let saveButton = document.createElement('button')
-                            saveButton.setAttribute('type', 'button')
-                            saveButton.setAttribute('class', 'btn')
-                            saveButton.setAttribute('class', 'btn-primary')
-                            saveButton.setAttribute('id', response.doc[i].id)
-                            saveButton.textContent = 'Сохранить'
-                            modalFooter.appendChild(saveButton)
 
                             // append the elements to the modal content element
                             modalContent.appendChild(modalHeader);

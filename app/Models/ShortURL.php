@@ -30,4 +30,8 @@ class ShortURL extends Model
     public function sendingDocs(){
         return $this->hasOne(Document::class,'id','document_id')->latest();
     }
+
+    public function signHistory(){
+        return $this->hasOne(VerigramSignHistory::class,'shortID','id')->latest();
+    }
 }

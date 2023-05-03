@@ -98,7 +98,7 @@
             },
             success: function (response) {
                 console.log(response)
-                if (response.success) {
+                if (response == 1) {
                     document.getElementById('success').innerHTML='СМС успешно отправлен';
                 } else {
                     document.getElementById('error').innerHTML = "Попробуйте позже";

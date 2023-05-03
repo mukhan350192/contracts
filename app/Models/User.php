@@ -79,4 +79,8 @@ class User extends Authenticatable
     public static function profile(int $id): JsonResponse{
         return response()->success([User::where('id',$id)->select('name','phone','iin')->first()]);
     }
+
+    public function transactions(){
+        return $this->hasMany(BalanceHistory::class,'user_id','id');
+    }
 }

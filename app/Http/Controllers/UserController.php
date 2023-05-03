@@ -14,6 +14,7 @@ use App\Http\Requests\SMSRequest;
 use App\Http\Services\ClientService;
 use App\Http\Services\ManagerService;
 use App\Http\Services\PartnerService;
+use App\Models\ShortURL;
 use App\Models\Sms;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -181,5 +182,12 @@ class UserController extends Controller
 
     public function getSendingSMS(Request $request,PartnerService $service){
         return $service->getSendingSMS($request->user()->id);
+    }
+    public function getSigningSMS(Request $request){
+        return response()->success(['data'=>ShortURL::with('signHistory')->where('user_id',$request->userID)->get()]);
+    }
+
+    public function transaction(){
+        return response()->success(['data'=>User::with('transactions')->where('id',auth()->user()->id)->first()]);
     }
 }

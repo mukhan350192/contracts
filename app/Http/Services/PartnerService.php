@@ -300,11 +300,15 @@ class PartnerService
         $before = 0;
         if ($balance) {
             $before = $balance->balance_before;
+            $amount = $balance->amount-1;
+        }else{
+            $before = DB::table('balance')->where('user_id', $userID)->first()->amount;
+            $amount = DB::table('balance')->where('user_id', $userID)->first()->amount-1;
         }
         DB::table('balance')->where('user_id', $userID)->decrement('amount', 1);
         DB::table('balance_history')->insertGetId([
             'status' => 'expenditure',
-            'amount' => 0,
+            'amount' => $amount,
             'balance_before' => $before,
             'balance_after' => $before - 1,
             'description' => 'Отправка смс',
@@ -388,6 +392,6 @@ class PartnerService
     }
 
     public function getSendingSMS(int $userID){
-            return response()->success(['data'=>ShortURL::with('sendingDocs')->with('signHistory')->where('user_id',$userID)->get()]);
+            return response()->success(['data'=>ShortURL::with('sendingDocs')->where('user_id',$userID)->get()]);
     }
 }

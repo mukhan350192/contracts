@@ -18,7 +18,7 @@
                 </nav>
             </div>
 
-            <div class="col-lg-9 p-4 ml-6 col-md-9">
+            <div class="col-lg-9 p-4 ml-6 col-md-12">
                 {{--
                 <div id="loading" style="display: none;">Loading...</div>
                 --}}

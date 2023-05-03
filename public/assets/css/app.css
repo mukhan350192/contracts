@@ -733,5 +733,22 @@ a.article:hover {
     .w3l-footer .footer-list-28 ul li a, .w3l-footer .footer-list-28 ul li p{
         line-height: 1;
     }
+    #docs{
+        margin-left: -120px;
+        width: 840px;
+        height: 100%;
+    }
+    #docs h4{
+        font-size: 48px;
+    }
+    #docs th{
+        font-size: 36px;
+    }
+    #docs td{
+        font-size: 32px;
+    }
+    #upload label,strong{
+        font-size: 36px;
+    }
 }
 

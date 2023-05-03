@@ -181,22 +181,6 @@
                             // show the modal
                             $(modal).modal('show');
                         })
-
-                        document.getElementById('approve'+response.doc[i].id).addEventListener('click',function (e){
-                            $.ajax({
-                                url: 'api/partner/approve?documentID='+response.doc[i].id,
-                                type: 'GET',
-                                headers: {
-                                    'Authorization': 'Bearer '+ token,
-                                },
-                                success: function (response){
-                                    window.location.href='partner-page'
-                                },
-                                error: function (response){
-                                    alert('Попробуйте позже')
-                                }
-                            })
-                        })*/
                     }
 
                     let now = new Date(response.data[i].updated_at);

@@ -81,6 +81,6 @@ class User extends Authenticatable
     }
 
     public function transactions(){
-        return $this->hasMany(BalanceHistory::class,'user_id','id');
+        return $this->hasMany(BalanceHistory::class,'user_id','id')->orderBy('created_at','desc');
     }
 }

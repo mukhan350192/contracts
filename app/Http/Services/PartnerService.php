@@ -326,7 +326,7 @@ class PartnerService
         $messages = [
             [
                 'notifyUrl' => route('infobip'),
-                'from' => 'ICREDITKZ',
+                'from' => env('ALPHANAME'), //env('ALPHANAME
                 'text' => $message,
                 'destinations' => [
                     [

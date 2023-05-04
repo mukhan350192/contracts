@@ -42,7 +42,7 @@ class Sms extends Model
         $messages = [
             [
                 'notifyUrl' => route('infobip'),
-                'from' => 'ICREDITKZ',
+                'from' => env('ALPHANAME'),
                 'text' => 'Код подтверджение '.$code,
                 'destinations' => [
                     [

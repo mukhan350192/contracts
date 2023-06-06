@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PhoneRequest;
+use App\Http\Services\SMSService;
 use App\Models\Sms;
 use Illuminate\Http\Request;
 const SMS_STATUS_QUEUED = 100;
@@ -39,8 +41,7 @@ class SMSController extends Controller
     }
 
 
-    public function send(Request $request){
-
-        return Sms::send($request->phone);
+    public function send(PhoneRequest $request,SMSService $service){
+        return $service->sendCode($request->phone);
     }
 }

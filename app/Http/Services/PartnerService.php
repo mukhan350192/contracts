@@ -97,31 +97,7 @@ class PartnerService
     }
 
 
-    /**
-     * @param $doc
-     * @param string $name
-     * @param int $userID
-     * @return JsonResponse
-     */
-    public function addDocs($doc, string $name, int $userID): JsonResponse
-    {
-        $fileName = sha1(Str::random(50)) . "." . $doc->extension();
-        $doc->storeAs('uploads', $fileName, 'public');
-        $doc->move(public_path('uploads'), $fileName);
-        $docID = DB::table('documents')->insertGetId([
-            'user_id' => $userID,
-            'document' => $fileName,
-            'name' => $name,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
 
-        DocumentStatusHistory::create([
-            'status_id' => 1,
-            'doc_id' => $docID,
-        ]);
-        return response()->success();
-    }
 
     /**
      * @param string $phone
@@ -150,46 +126,7 @@ class PartnerService
         return response()->success($docs);
     }
 
-    /**
-     * @param int $userID
-     * @return JsonResponse
-     */
-    public function getDocs(int $userID): JsonResponse
-    {
-        $doc = Document::with('status')->where('user_id', $userID)->get()->toArray();;
-        if (!$doc) {
-            return response()->fail('Пока у вас нету документов');
-        }
-        $data['doc'] = $doc;
-        return response()->success($data);
-    }
 
-    /**
-     * @param int $userID
-     * @return JsonResponse
-     */
-    public function getActiveDocs(int $userID): JsonResponse
-    {
-        $doc = Document::where('user_id',$userID)
-                ->join('document_status_histories','document_status_histories.doc_id','=','documents.id')
-                ->select('documents.id','documents.name')
-                ->where('document_status_histories.status_id',4)
-                ->get()->toArray();
-
-
-        if (!$doc) {
-            return response()->fail('Пока у вас нету документов');
-        }
-
-
-        $balance = DB::table('balance')->where('user_id', $userID)->first();
-        if (!$balance || $balance->amount < 1) {
-            return response()->fail('У вас не хватает баланса');
-        }
-
-        $data['doc'] = $doc;
-        return response()->success($data);
-    }
 
     /**
      * @param int $userID
@@ -348,49 +285,12 @@ class PartnerService
         return $request->json();
     }
 
-    public function remember_password($phone)
-    {
-        $token = Str::random(8);
-        $link = 'https://api.mircreditov.kz/restore/' . $token;
-        $message = 'Для восстановление пароля перейдите по ссылке ' . $link;
 
-        $smsID = DB::table('sms')->insertGetId([
-            'phone' => $phone,
-            'message' => $message,
-            'type' => 2,
-        ]);
-        $userID = User::where('phone', $phone)->select('id')->first();
-        DB::table('restore_url')->insertGetId([
-            'token' => $token,
-            'user_id' => $userID->id,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
 
-        $response = $this->sendSMS($message, $smsID, $phone);
-        return isset($response['messages'][0]['status']['groupId'])
-            && in_array($response['messages'][0]['status']['groupId'], [1, 3]);
-    }
-
-    public function restore_password(int $userID, string $password, int $restoreID)
-    {
-        DB::table('restore_url')->where('id', $restoreID)->update(['status' => true, 'updated_at' => Carbon::now()]);
-        $update = User::where('id', $userID)->update(['password' => bcrypt($password)]);
-        if (!$update) {
-            return response()->fail('Попробуйте позже');
-        }
-        return response()->success();
-    }
-
-    public function approveDoc(int $documentID)
-    {
-        DocumentStatusHistory::create([
-            'status_id' => 4,
-            'doc_id' => $documentID,
-        ]);
-        return response()->success();
-    }
-
+    /**
+     * @param int $userID
+     * @return JsonResponse
+     */
     public function getSendingSMS(int $userID){
             return response()->success(['data'=>ShortURL::with('sendingDocs')->where('user_id',$userID)->get()]);
     }

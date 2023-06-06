@@ -19,8 +19,6 @@ class LawyerController extends Controller
     }
 
     public function approve(Request $request, LawyerService $service){
-//        var_dump($request->all());
-//        var_dump($request->document_id);
         return $service->approve($request->document_id,$request->file,$request->comment);
     }
 }

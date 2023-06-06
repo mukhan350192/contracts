@@ -2,6 +2,11 @@
 
 use App\Http\Controllers\LawyerController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\PartnerDocumentController;
+use App\Http\Controllers\PartnerSMSController;
+use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SMSController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerigramController;
@@ -28,23 +33,30 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('sendSMS',[SMSController::class,'send']);
-Route::get('partner/create',[UserController::class,'create']);
-Route::post('manager/add/account',[UserController::class,'managerCreate']);
-Route::post('partner/sign',[UserController::class,'sign']);
-Route::post('paymentResult',[UserController::class,'paymentResult']);
+Route::get('partner/create',[PartnerController::class,'create']);
+//Route::post('manager/add/account',[UserController::class,'managerCreate']);
+Route::post('partner/sign',[PartnerController::class,'sign']);
+Route::post('paymentResult',[PaymentController::class,'paymentResult']);
+
 Route::middleware(['auth:sanctum', 'abilities:partner'])->group(function (): void {
     Route::prefix('partner')->group(function(){
-        Route::post('addDocs',[UserController::class,'addDocs']);
+        Route::post('addDocs',[PartnerDocumentController::class,'addDocs']);
+        //todo
         Route::get('pay',[UserController::class,'payment']);
-        Route::get('getActiveDocs',[UserController::class,'getActiveDocs']);
-        Route::get('getDocs',[UserController::class,'getDocs']);
+        Route::get('getActiveDocs',[PartnerDocumentController::class,'getActiveDocs']);
+        Route::get('getDocs',[PartnerDocumentController::class,'getDocs']);
+        //todo
         Route::get('send',[UserController::class,'send']);
-        Route::get('logout',[UserController::class,'logout']);
-        Route::get('profile',[UserController::class,'profile']);
-        Route::get('approve',[UserController::class,'approve']);
-        Route::get('getSendingSMS',[UserController::class,'getSendingSMS']);
-        Route::get('getSigningSMS',[UserController::class,'getSigningSMS']);
-        Route::get('transaction',[UserController::class,'transaction']);
+
+        Route::get('logout',[PartnerController::class,'logout']);
+        Route::get('profile',[PartnerController::class,'profile']);
+
+
+        Route::get('approve',[PartnerDocumentController::class,'approve']);
+
+        Route::get('getSendingSMS',[PartnerSMSController::class,'getSendingSMS']);
+        Route::get('getSigningSMS',[PartnerSMSController::class,'getSigningSMS']);
+        Route::get('transaction',[PaymentController::class,'transaction']);
     });
 });
 Route::any('infobip',[SMSController::class,'infobip'])->name('infobip');
@@ -59,12 +71,13 @@ Route::middleware(['auth:sanctum', 'abilities:client'])->group(function(): void{
       Route::get('getDocs',[UserController::class,'getClientDocs']);
    });
 });
+/*
 Route::middleware(['auth:sanctum','abilities:manager'])->group(function():void{
    Route::prefix('manager')->group(function(){
        Route::get('getAllDocs',[ManagerController::class,'getAll']);
        Route::post('approve',[ManagerController::class,'approve']);
     });
-});
+});*/
 //verigram
 Route::get('getAccessToken',[VerigramController::class,'getAccessToken']);
 Route::post('fields',[VerigramController::class,'fields']);
@@ -83,5 +96,5 @@ Route::middleware(['auth:sanctum','abilities:lawyer'])->group(function():void{
 });
 
 //remember
-Route::get('/remember_password',[UserController::class,'remember_password']);
-Route::get('/restore_password',[UserController::class,'restore_password']);
+Route::get('/remember_password',[PasswordController::class,'remember_password']);
+Route::get('/restore_password',[PasswordController::class,'restore_password']);

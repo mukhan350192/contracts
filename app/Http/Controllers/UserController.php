@@ -24,26 +24,6 @@ use Illuminate\View\View;
 class UserController extends Controller
 {
     /**
-     * @param PartnerRequest $request
-     * @param PartnerService $service
-     * @return JsonResponse
-     */
-    public function create(PartnerRequest $request, PartnerService $service): JsonResponse
-    {
-        return $service->create($request->name, $request->phone, $request->password, $request->company_name, $request->company_type, $request->bin, $request->code, $request->iin);
-    }
-
-    /**
-     * @param DocumentRequest $request
-     * @param PartnerService $service
-     * @return JsonResponse
-     */
-    public function addDocs(DocumentRequest $request, PartnerService $service): JsonResponse
-    {
-        return $service->addDocs($request->doc, $request->name, auth()->user()->id);
-    }
-
-    /**
      * @param SignRequest $request
      * @param PartnerService $service
      * @return JsonResponse
@@ -51,24 +31,6 @@ class UserController extends Controller
     public function sign(SignRequest $request, PartnerService $service): JsonResponse
     {
         return $service->sign($request->phone, $request->password);
-    }
-
-    /***
-     * @param PartnerService $service
-     * @return JsonResponse
-     */
-    public function getDocs(PartnerService $service): JsonResponse
-    {
-        return $service->getDocs(auth()->user()->id);
-    }
-
-    /**
-     * @param PartnerService $service
-     * @return JsonResponse
-     */
-    public function getActiveDocs(PartnerService $service): JsonResponse
-    {
-        return $service->getActiveDocs(auth()->user()->id);
     }
 
     /**
@@ -133,61 +95,5 @@ class UserController extends Controller
     public function managerCreate(Request $request, ManagerService $service): JsonResponse
     {
         return $service->create($request->phone, $request->password, $request->iin, $request->name);
-    }
-
-    /**
-     * @return JsonResponse
-     */
-    public function logout(): JsonResponse
-    {
-        $user = auth()->user();
-        $s = $user->currentAccessToken()->delete();
-        return response()->success();
-
-    }
-
-    /**
-     * @param PhonePartnerRequest $request
-     * @param PartnerService $service
-     * @return boolean
-     */
-    public function remember_password(PhonePartnerRequest $request, PartnerService $service): bool
-    {
-        return $service->remember_password($request->phone);
-    }
-
-    /**
-     * @param RestoreRequest $request
-     * @param PartnerService $service
-     * @return JsonResponse
-     */
-
-    public function restore_password(RestoreRequest $request, PartnerService $service): JsonResponse
-    {
-        return $service->restore_password($request->userID, $request->password, $request->restoreID);
-    }
-
-    /***
-     * @return JsonResponse
-     */
-    public function profile(): JsonResponse
-    {
-        return User::profile(auth()->user()->id);
-
-    }
-
-    public function approve(DocumentCheckRequest $request,PartnerService $service): JsonResponse{
-        return $service->approveDoc($request->documentID);
-    }
-
-    public function getSendingSMS(Request $request,PartnerService $service){
-        return $service->getSendingSMS($request->user()->id);
-    }
-    public function getSigningSMS(Request $request){
-        return response()->success(['data'=>ShortURL::with('signHistory')->where('user_id',$request->userID)->get()]);
-    }
-
-    public function transaction(){
-        return response()->success(['data'=>User::with('transactions')->where('id',auth()->user()->id)->first()]);
     }
 }

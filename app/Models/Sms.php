@@ -12,12 +12,22 @@ class Sms extends Model
 {
     use HasFactory;
 
-    protected $table = 'sms_history';
+    protected $table = 'sms';
     protected $fillable = [
-        'user_id',
         'phone',
-        'status'
+        'status',
+        'message',
+        'type',
     ];
+
+    public static function createCode(string $phone){
+        return Sms::query()->insertGetId([
+            'phone' => $phone,
+            'status' => 1,
+            'message' => 'Для подтверждение кода',
+            'type' => 1,
+        ]);
+    }
 
     public static function make(int $userID,string $phone){
         return Sms::query()->insertGetId([
@@ -25,6 +35,8 @@ class Sms extends Model
            'phone' => $phone,
         ]);
     }
+
+
 
     public static function send(string $phone){
         $code = rand(1000,9999);

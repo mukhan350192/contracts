@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->enum('status',['income','expenditure']);
             $table->double('amount');
-            $table->double('balance_before');
-            $table->double('balance_after');
             $table->text('description');
             $table->timestamps();
         });
